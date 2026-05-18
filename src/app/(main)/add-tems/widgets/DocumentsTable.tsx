@@ -180,11 +180,11 @@ export default function DocumentsTable({ documents, collectionName }: DocumentsT
                             </div>
                             <div>
                               <p className="text-xs font-semibold text-gray-800">{nameVal}</p>
-                              {doc._insertedAt && (
-                                <p className="text-[10px] text-gray-400 font-mono">
-                                  Joined {new Date(doc._insertedAt as string).toLocaleDateString()}
-                                </p>
-                              )}
+                             {typeof doc._insertedAt === "string" && (
+  <p className="text-[10px] text-gray-400 font-mono">
+    Joined {new Date(doc._insertedAt).toLocaleDateString()}
+  </p>
+)}
                             </div>
                           </div>
                         </td>
