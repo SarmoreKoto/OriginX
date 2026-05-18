@@ -1,6 +1,6 @@
 export class MetaApi {
   // ===== base url =====
-  static baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+  static baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://backend-expressjs-9rox.onrender.com";
 
   // ===== auth =====
   static login = `${this.baseUrl}/api/auth/login`;
