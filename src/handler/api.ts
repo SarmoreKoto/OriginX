@@ -1,13 +1,14 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL, // IMPORTANT
+  baseURL:
+    process.env.NEXT_PUBLIC_API_URL ||
+    "https://backend-expressjs-9rox.onrender.com",
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-// Attach token automatically
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
 
