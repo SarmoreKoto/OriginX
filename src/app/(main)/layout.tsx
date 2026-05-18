@@ -1,6 +1,5 @@
 import { Toaster } from "react-hot-toast";
-import "./globals.css";
-
+import DashboardShell from "@/resources/header_collapse";
 
 export default function RootLayout({
   children,
@@ -10,7 +9,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {children}
+        <DashboardShell>
+          {children}
+        </DashboardShell>
         <Toaster position="top-center" reverseOrder={false} />
       </body>
     </html>
