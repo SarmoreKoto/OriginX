@@ -14,9 +14,8 @@ interface TableStat {
 const TABLE_COLORS = ['#1a5c3a', '#22c55e', '#86efac', '#0f766e', '#2dd4bf', '#4ade80', '#065f46'];
 const MAX_LEGEND_ITEMS = 4;
 
-function GaugeCanvas({ slices, total, size = 'default' }: { slices: { value: number; color: string }[]; total: number; size?: 'small' | 'default' }) {
+function GaugeCanvas({ slices, total }: { slices: { value: number; color: string }[]; total: number }) {
   const ref = useRef<HTMLCanvasElement>(null);
-  const dimensions = size === 'small' ? { w: 100, h: 60 } : { w: 140, h: 84 };
 
   useEffect(() => {
     const canvas = ref.current;
@@ -63,16 +62,16 @@ function GaugeCanvas({ slices, total, size = 'default' }: { slices: { value: num
     ctx.fillStyle = '#9ca3af';
     ctx.font = '500 10px system-ui, sans-serif';
     ctx.fillText('tables', cx, cy + 8);
-  }, [slices, total, dimensions]);
+  }, [slices, total]);
 
   return (
     <canvas
       ref={ref}
-      width={dimensions.w}
-      height={dimensions.h}
+      width={140}
+      height={84}
       role="img"
       aria-label={`Half-gauge showing ${total} tables`}
-      className="block flex-shrink-0"
+      style={{ display: 'block', flexShrink: 0 }}
     />
   );
 }
@@ -161,31 +160,34 @@ export default function CollectionsGaugeCard({ dbName: dbNameProp }: { dbName?: 
       `}</style>
 
       <div
-        className="bg-white rounded-lg md:rounded-2xl border p-3 md:p-4 w-full"
         style={{
-          borderColor: '#e8f5e9',
+          background: 'white',
+          borderRadius: 14,
+          border: '1px solid #e8f5e9',
+          padding: '14px 16px',
+          maxWidth: 340,
           boxShadow: '0 2px 12px rgba(26,92,58,0.07)',
           animation: mounted ? 'cardIn 0.4s ease both' : 'none',
         }}
       >
         {/* ── Header ── */}
-        <div className="flex items-center justify-between gap-2 mb-3 md:mb-4">
-          <div className="min-w-0">
-            <p className="text-xs md:text-sm font-bold md:font-600 text-gray-900">Tables</p>
-            <div className="flex items-center gap-1.5 md:gap-2 mt-0.5 md:mt-1">
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+          <div>
+            <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: '#111827' }}>Tables</p>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 2 }}>
               <span style={{
-                width: 4, height: 4, borderRadius: '50%', background: '#22c55e',
+                width: 6, height: 6, borderRadius: '50%', background: '#22c55e',
                 display: 'inline-block', animation: 'livePulse 2s ease-in-out infinite',
               }} />
-              <span className="text-[9px] md:text-[10px] text-gray-400 truncate">{dbLabel}</span>
+              <span style={{ fontSize: 10, color: '#9ca3af' }}>{dbLabel}</span>
             </div>
           </div>
           <button
             onClick={() => router.push('/all-collections')}
-            className="p-1 md:p-1.5 hover:opacity-70 transition-opacity flex-shrink-0"
+            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 2, opacity: 0.4 }}
             aria-label="View all tables"
           >
-            <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M3 11L11 3M11 3H6M11 3V8" stroke="#111827" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </button>
@@ -193,36 +195,37 @@ export default function CollectionsGaugeCard({ dbName: dbNameProp }: { dbName?: 
 
         {/* ── Body ── */}
         {loading ? (
-          <div className="flex flex-col sm:flex-row items-center gap-2 md:gap-4">
-            <div className="w-24 md:w-32 h-14 md:h-20 rounded-lg bg-gray-100 flex-shrink-0 animate-pulse" />
-            <div className="flex-1 w-full space-y-2">
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            <div style={{ width: 140, height: 84, borderRadius: 8, background: '#f0faf4', flexShrink: 0 }} className="animate-pulse" />
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 8 }}>
               {[1, 2, 3].map((i) => (
-                <div key={i} className="h-2 md:h-2.5 rounded-full bg-gray-100 animate-pulse" style={{ width: i === 1 ? '80%' : i === 2 ? '60%' : '70%' }} />
+                <div key={i} style={{ height: 10, borderRadius: 5, background: '#f0faf4', width: i === 1 ? '80%' : i === 2 ? '60%' : '70%' }} className="animate-pulse" />
               ))}
             </div>
           </div>
         ) : tables.length === 0 ? (
-          <div className="text-center py-4 md:py-6">
-            <p className="text-xs md:text-sm font-semibold text-gray-400">No tables found</p>
-            <p className="text-[10px] md:text-xs text-gray-300 mt-1">Create a collection to get started</p>
+          <div style={{ textAlign: 'center', padding: '16px 0' }}>
+            <p style={{ fontSize: 12, color: '#9ca3af', margin: 0 }}>No tables found</p>
+            <p style={{ fontSize: 11, color: '#d1d5db', margin: '4px 0 0' }}>Create a collection to get started</p>
           </div>
         ) : (
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 md:gap-3">
+          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
 
-            {/* ── Gauge — responsive size ── */}
-            <div className="flex justify-center sm:flex-shrink-0">
-              <GaugeCanvas slices={slices} total={totalTables} size="default" />
-            </div>
+            {/* ── Bigger gauge ── */}
+            <GaugeCanvas slices={slices} total={totalTables} />
 
-            {/* ── Legend: responsive ── */}
-            <div className="flex-1 min-w-0">
+            {/* ── Legend: right-shifted, right-aligned total ── */}
+            <div style={{ flex: 1, minWidth: 0 }}>
 
               {legendTables.map((t) => (
-                <div key={`${t.dbName}-${t.name}`} className="gauge-leg text-xs md:text-sm">
+                <div key={`${t.dbName}-${t.name}`} className="gauge-leg">
                   {/* dot + name */}
-                  <div className="flex items-center gap-1.5 md:gap-2 min-w-0 flex-1">
-                    <span className="w-1 md:w-1.5 h-1 md:h-1.5 rounded-full flex-shrink-0" style={{ background: t.color }} />
-                    <span className="text-[10px] md:text-xs text-gray-600 overflow-hidden text-overflow-ellipsis whitespace-nowrap">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 5, minWidth: 0, flex: 1 }}>
+                    <span style={{ width: 7, height: 7, borderRadius: '50%', background: t.color, flexShrink: 0 }} />
+                    <span style={{
+                      fontSize: 10, color: '#374151',
+                      overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                    }}>
                       {t.name}
                     </span>
                   </div>
@@ -232,25 +235,34 @@ export default function CollectionsGaugeCard({ dbName: dbNameProp }: { dbName?: 
               {/* +N more */}
               {hiddenCount > 0 && (
                 <div
-                  className="gauge-leg more-row cursor-pointer text-xs md:text-sm"
+                  className="gauge-leg more-row"
+                  style={{ cursor: 'pointer' }}
                   onClick={() => router.push('/all-collections')}
                 >
-                  <div className="flex items-center gap-1.5 md:gap-2">
-                    <span className="w-1 md:w-1.5 h-1 md:h-1.5 rounded-full flex-shrink-0 bg-gray-300" />
-                    <span className="text-[10px] md:text-xs text-gray-500 italic">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                    <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#d1d5db', flexShrink: 0 }} />
+                    <span style={{ fontSize: 10, color: '#6b7280', fontStyle: 'italic' }}>
                       +{hiddenCount} more
                     </span>
                   </div>
-                  <svg width="9" height="9" viewBox="0 0 10 10" fill="none" className="flex-shrink-0">
-                    <path d="M2 8L8 2M8 2H4.5M8 2V5.5" stroke="#111827" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.35 }} />
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none" style={{ flexShrink: 0, opacity: 0.35 }}>
+                    <path d="M2 8L8 2M8 2H4.5M8 2V5.5" stroke="#111827" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </div>
               )}
 
               {/* Footer pill — total right-aligned */}
-              <div className="mt-2 md:mt-3 bg-gray-50 rounded px-2 md:px-3 py-1.5 md:py-2 flex justify-end">
-                <span className="text-[9px] md:text-[10px] font-bold" style={{ color: '#1a5c3a' }}>
-                  {totalTables} table{totalTables !== 1 ? 's' : ''}
+              <div style={{
+                marginTop: 8,
+                background: '#f0faf4',
+                borderRadius: 7,
+                padding: '4px 8px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'flex-end',   /* ← total pushed to the right */
+              }}>
+                <span style={{ fontSize: 10, color: '#1a5c3a', fontWeight: 700 }}>
+                  {totalTables} tables
                 </span>
               </div>
 

@@ -52,8 +52,8 @@ function formatDate(iso?: string) {
   return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 
-// ── Single user row ─────────────────────────────────────────────────────────
-function UserRow({ user, index }: { user: User; index: number }) {
+// ── Desktop user row ────────────────────────────────────────────────────────
+function UserRowDesktop({ user, index }: { user: User; index: number }) {
   const isActive    = user.status?.toLowerCase() === 'active';
   const avatarStyle = AVATAR_COLORS[index % AVATAR_COLORS.length];
   const roleKey     = user.role?.toLowerCase() ?? 'user';
@@ -61,7 +61,7 @@ function UserRow({ user, index }: { user: User; index: number }) {
 
   return (
     <div
-      className="grid items-center px-5 py-3.5 transition-colors duration-150 hover:bg-gray-50/80"
+      className="hidden md:grid items-center px-5 py-3.5 transition-colors duration-150 hover:bg-gray-50/80"
       style={{
         gridTemplateColumns: '1fr auto auto auto',
         gap: '12px',
@@ -132,6 +132,130 @@ function UserRow({ user, index }: { user: User; index: number }) {
   );
 }
 
+// ── Mobile user card ────────────────────────────────────────────────────────
+function UserCardMobile({ user, index }: { user: User; index: number }) {
+  const isActive    = user.status?.toLowerCase() === 'active';
+  const avatarStyle = AVATAR_COLORS[index % AVATAR_COLORS.length];
+  const roleKey     = user.role?.toLowerCase() ?? 'user';
+  const roleConfig  = ROLE_CONFIG[roleKey] ?? ROLE_CONFIG.user;
+  const [expanded, setExpanded] = useState(false);
+
+  return (
+    <div
+      className="md:hidden"
+      style={{
+        animation: `userRowIn 0.35s ease ${index * 60 + 100}ms both`,
+      }}
+    >
+      {/* Mobile card */}
+      <div
+        className="px-4 py-3 border-b border-gray-100 transition-colors duration-150 active:bg-gray-50/80"
+      >
+        <div className="flex items-center justify-between gap-3 mb-2">
+          <div className="flex items-center gap-3 min-w-0 flex-1">
+            <div
+              className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-black text-xs flex-shrink-0 overflow-hidden"
+              style={{
+                background: user.avatar ? 'transparent' : avatarStyle.bg,
+                boxShadow: '0 3px 8px rgba(0,0,0,0.12)',
+              }}
+            >
+              {user.avatar
+                ? <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
+                : getInitials(user.name)
+              }
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="text-sm font-bold text-gray-900 truncate leading-tight">{user.name}</p>
+              <p className="text-xs text-gray-400 truncate mt-0.5">{user.email}</p>
+            </div>
+          </div>
+
+          {/* Status dot indicator */}
+          <span
+            className="w-2.5 h-2.5 rounded-full flex-shrink-0"
+            style={{
+              background: isActive ? '#22c55e' : '#d1d5db',
+              animation: isActive ? 'livePulse 2s ease-in-out infinite' : 'none',
+            }}
+          />
+        </div>
+
+        {/* Compact info row */}
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span
+              className="inline-flex items-center text-[10px] font-bold px-2 py-0.5 rounded-lg capitalize whitespace-nowrap"
+              style={{
+                background: roleConfig.bg,
+                color: roleConfig.color,
+                border: `1px solid ${roleConfig.border}`,
+              }}
+            >
+              {user.role}
+            </span>
+            <span
+              className="text-[10px] font-semibold text-gray-500 whitespace-nowrap"
+            >
+              {formatDate(user.createdAt)}
+            </span>
+          </div>
+
+          {/* Expand toggle */}
+          <button
+            onClick={() => setExpanded(!expanded)}
+            className="p-1 text-gray-400 transition-transform duration-200"
+            style={{
+              transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)',
+            }}
+            aria-label="Toggle details"
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 6L8 10L4 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Expanded details */}
+        {expanded && (
+          <div
+            className="mt-3 pt-3 border-t border-gray-100 space-y-2 text-xs"
+            style={{
+              animation: 'fadeUp 0.25s ease',
+            }}
+          >
+            {user.phone && (
+              <div className="flex justify-between items-start">
+                <span className="text-gray-500 font-medium">Phone</span>
+                <span className="text-gray-700 font-semibold text-right">{user.phone}</span>
+              </div>
+            )}
+            <div className="flex justify-between items-start">
+              <span className="text-gray-500 font-medium">Status</span>
+              <span
+                className="inline-flex items-center gap-1 font-bold px-2 py-0.5 rounded-full"
+                style={
+                  isActive
+                    ? { background: '#f0faf4', color: '#15803d', border: '1px solid #d1fae5' }
+                    : { background: '#f9fafb', color: '#6b7280', border: '1px solid #e5e7eb' }
+                }
+              >
+                <span
+                  className="w-1.5 h-1.5 rounded-full"
+                  style={{
+                    background: isActive ? '#22c55e' : '#d1d5db',
+                  }}
+                />
+                {isActive ? 'Active' : 'Inactive'}
+              </span>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // ── Main component ───────────────────────────────────────────────────────────
 export default function UsersDirectory() {
   const router = useRouter();
@@ -178,7 +302,7 @@ export default function UsersDirectory() {
       `}</style>
 
       <div
-        className="bg-white rounded-2xl overflow-hidden"
+        className="bg-white rounded-2xl overflow-hidden mx-auto max-w-full"
         style={{
           border: '1px solid #f0f0f0',
           boxShadow: '0 4px 24px rgba(0,0,0,0.05), 0 1px 4px rgba(0,0,0,0.03)',
@@ -188,12 +312,12 @@ export default function UsersDirectory() {
 
         {/* ── Card Header ─────────────────────────────────────── */}
         <div
-          className="px-6 py-4 flex items-center justify-between"
+          className="px-4 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
           style={{ borderBottom: '1px solid #f5f5f5' }}
         >
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 min-w-0">
             {/* Spinning ring icon — matches other cards */}
-            <div className="relative">
+            <div className="relative flex-shrink-0">
               <div
                 aria-hidden
                 className="absolute rounded-full pointer-events-none"
@@ -215,49 +339,51 @@ export default function UsersDirectory() {
               </div>
             </div>
 
-            <div>
-              <h3 className="text-[15px] font-black text-gray-900 tracking-tight leading-none">
+            <div className="min-w-0">
+              <h3 className="text-sm sm:text-[15px] font-black text-gray-900 tracking-tight leading-none">
                 Users Directory
               </h3>
               <div className="flex items-center gap-1.5 mt-0.5">
                 <span
-                  className="w-1.5 h-1.5 rounded-full"
+                  className="w-1.5 h-1.5 rounded-full flex-shrink-0"
                   style={{ background: '#22c55e', animation: 'livePulse 2s ease-in-out infinite' }}
                 />
-                <p className="text-[11px] text-gray-400 font-medium">Live · {users.length} total</p>
+                <p className="text-[10px] sm:text-[11px] text-gray-400 font-medium whitespace-nowrap">
+                  Live · {users.length} {users.length === 1 ? 'user' : 'users'}
+                </p>
               </div>
             </div>
           </div>
 
-          {/* Summary pills */}
+          {/* Summary pills — stack on mobile, row on desktop */}
           {!loading && users.length > 0 && (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
               <div
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl"
+                className="flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl text-[10px] sm:text-[11px]"
                 style={{ background: '#f0faf4', border: '1px solid #d1fae5' }}
               >
-                <span className="w-1.5 h-1.5 rounded-full" style={{ background: '#22c55e' }} />
-                <span className="text-[11px] font-black" style={{ color: '#1a5c3a' }}>
-                  {activeCount} Active
+                <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: '#22c55e' }} />
+                <span className="font-black" style={{ color: '#1a5c3a' }}>
+                  {activeCount} <span className="hidden sm:inline">Active</span>
                 </span>
               </div>
               <div
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl"
+                className="flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl text-[10px] sm:text-[11px]"
                 style={{ background: '#f9fafb', border: '1px solid #e5e7eb' }}
               >
-                <span className="w-1.5 h-1.5 rounded-full bg-gray-300" />
-                <span className="text-[11px] font-black text-gray-500">
-                  {users.length - activeCount} Inactive
+                <span className="w-1.5 h-1.5 rounded-full bg-gray-300 flex-shrink-0" />
+                <span className="font-black text-gray-500">
+                  {users.length - activeCount} <span className="hidden sm:inline">Inactive</span>
                 </span>
               </div>
             </div>
           )}
         </div>
 
-        {/* ── Table column headers ─────────────────────────────── */}
+        {/* ── Table column headers (desktop only) ─────────────── */}
         {!loading && !error && users.length > 0 && (
           <div
-            className="grid items-center px-5 py-2.5"
+            className="hidden md:grid items-center px-5 py-2.5"
             style={{
               gridTemplateColumns: '1fr auto auto auto',
               gap: '12px',
@@ -278,7 +404,7 @@ export default function UsersDirectory() {
             {[1, 2, 3, 4, 5].map(i => (
               <div
                 key={i}
-                className="grid items-center px-5 py-3.5 animate-pulse"
+                className="hidden md:grid items-center px-5 py-3.5 animate-pulse"
                 style={{ gridTemplateColumns: '1fr auto auto auto', gap: '12px' }}
               >
                 <div className="flex items-center gap-3">
@@ -293,12 +419,31 @@ export default function UsersDirectory() {
                 <div className="h-5 w-14 bg-gray-100 rounded-full" />
               </div>
             ))}
+            {/* Mobile skeleton */}
+            {[1, 2, 3, 4, 5].map(i => (
+              <div
+                key={i}
+                className="md:hidden px-4 py-3 animate-pulse border-b border-gray-100"
+              >
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-10 h-10 rounded-xl bg-gray-100 flex-shrink-0" />
+                  <div className="space-y-1.5 flex-1">
+                    <div className="h-3 w-32 bg-gray-100 rounded-full" />
+                    <div className="h-2.5 w-40 bg-gray-100 rounded-full" />
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <div className="h-5 w-14 bg-gray-100 rounded-lg" />
+                  <div className="h-5 w-12 bg-gray-100 rounded-full" />
+                </div>
+              </div>
+            ))}
           </div>
         )}
 
         {/* ── Error state ──────────────────────────────────────── */}
         {!loading && error && (
-          <div className="flex flex-col items-center justify-center py-14 text-center px-6">
+          <div className="flex flex-col items-center justify-center py-10 sm:py-14 text-center px-4 sm:px-6">
             <div
               className="w-12 h-12 rounded-2xl flex items-center justify-center mb-3"
               style={{ background: '#fef2f2', border: '1px solid #fecaca' }}
@@ -309,7 +454,7 @@ export default function UsersDirectory() {
             <p className="text-xs text-gray-400 mb-4 max-w-xs">{error}</p>
             <button
               onClick={() => window.location.reload()}
-              className="px-4 py-2 rounded-xl text-xs font-bold transition-all hover:opacity-80"
+              className="px-4 py-2 rounded-xl text-xs font-bold transition-all active:opacity-75 hover:opacity-80"
               style={{
                 background: 'linear-gradient(135deg, #1a5c3a, #0f3d26)',
                 color: 'white',
@@ -323,7 +468,7 @@ export default function UsersDirectory() {
 
         {/* ── Empty state ──────────────────────────────────────── */}
         {!loading && !error && users.length === 0 && (
-          <div className="flex flex-col items-center justify-center py-14 text-center px-6">
+          <div className="flex flex-col items-center justify-center py-10 sm:py-14 text-center px-4 sm:px-6">
             <div
               className="w-12 h-12 rounded-2xl flex items-center justify-center mb-3"
               style={{ background: '#f0faf4', border: '1px solid #d1fae5' }}
@@ -335,11 +480,14 @@ export default function UsersDirectory() {
           </div>
         )}
 
-        {/* ── User rows ────────────────────────────────────────── */}
+        {/* ── User rows (desktop) & cards (mobile) ──────────────── */}
         {!loading && !error && users.length > 0 && (
           <div>
             {preview.map((user, i) => (
-              <UserRow key={user._id} user={user} index={i} />
+              <div key={user._id}>
+                <UserRowDesktop user={user} index={i} />
+                <UserCardMobile user={user} index={i} />
+              </div>
             ))}
           </div>
         )}
@@ -347,10 +495,10 @@ export default function UsersDirectory() {
         {/* ── Footer ───────────────────────────────────────────── */}
         {!loading && !error && users.length > 0 && (
           <div
-            className="px-5 py-3.5 flex items-center justify-between"
+            className="px-4 sm:px-5 py-3.5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0"
             style={{ borderTop: '1px solid #f5f5f5', background: '#fafafa' }}
           >
-            <p className="text-[11px] text-gray-400 font-medium">
+            <p className="text-[10px] sm:text-[11px] text-gray-400 font-medium">
               Showing{' '}
               <span className="font-black text-gray-700">{Math.min(5, users.length)}</span>
               {' '}of{' '}
@@ -361,7 +509,7 @@ export default function UsersDirectory() {
             {users.length > 5 ? (
               <button
                 onClick={() => router.push('/all-users')}
-                className="flex items-center gap-1.5 text-[11px] font-bold px-3 py-1.5 rounded-xl transition-all duration-200 hover:opacity-80"
+                className="flex items-center justify-center sm:justify-start gap-1.5 w-full sm:w-auto text-[11px] font-bold px-3 py-2 sm:py-1.5 rounded-xl transition-all duration-200 active:opacity-75 hover:opacity-80"
                 style={{
                   background: 'linear-gradient(135deg, #1a5c3a, #0f3d26)',
                   color: 'white',
@@ -372,12 +520,12 @@ export default function UsersDirectory() {
                 <Icons.arrowUpRight size={11} />
               </button>
             ) : (
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center justify-center sm:justify-start gap-1.5">
                 <span
                   className="w-1.5 h-1.5 rounded-full"
                   style={{ background: '#22c55e', animation: 'livePulse 2s ease-in-out infinite' }}
                 />
-                <span className="text-[9px] text-gray-400 font-semibold">Live sync</span>
+                <span className="text-[9px] sm:text-[9px] text-gray-400 font-semibold">Live sync</span>
               </div>
             )}
           </div>

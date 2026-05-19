@@ -211,6 +211,9 @@ export default function DashboardPage() {
             >
               <TotalUsersStatNumber />
             </StatMiniCard>
+              <div className="fu d3">
+                <DatabaseUsageCard />
+              </div>
           </div>
 
           {/* ── MAIN GRID ────────────────────────────────────── */}
@@ -218,9 +221,7 @@ export default function DashboardPage() {
 
             {/* Left column — Storage + Collections */}
             <div className="lg:col-span-5 space-y-4 md:space-y-5">
-              <div className="fu d3">
-                <DatabaseUsageCard />
-              </div>
+            
               
               <div className="fu d4">
                 <CollectionsGaugeCard />
