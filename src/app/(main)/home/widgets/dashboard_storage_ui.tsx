@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Icons, IconName } from '@/resources/icons';
+import { Icons } from '@/resources/icons';
 import { getDatabases } from '@/handler/collection_handler';
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
@@ -126,7 +126,7 @@ function DbAvatar({
 
   return (
     <div
-      className="w-11 h-11 rounded-xl flex items-center justify-center text-white text-xs font-black flex-shrink-0"
+      className="w-9 md:w-11 h-9 md:h-11 rounded-lg md:rounded-xl flex items-center justify-center text-white text-[10px] md:text-xs font-black flex-shrink-0"
       style={{
         background: gradient,
         boxShadow: `0 4px 12px ${glow}`,
@@ -202,16 +202,16 @@ export default function DatabaseUsageCard() {
         }
       `}</style>
 
-      <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden"
+      <div className="bg-white rounded-lg md:rounded-2xl border border-gray-100 overflow-hidden"
         style={{ boxShadow: '0 4px 24px rgba(0,0,0,0.05), 0 1px 4px rgba(0,0,0,0.03)' }}
       >
-        <div className="p-6">
+        <div className="p-4 md:p-6">
 
           {/* ── Header ─────────────────────────────────────────────────── */}
-          <div className="flex items-center justify-between mb-5">
-            <div className="flex items-center gap-3">
+          <div className="flex items-center justify-between mb-3 md:mb-5 gap-2">
+            <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
               {/* Icon — matches stat card style */}
-              <div className="relative">
+              <div className="relative flex-shrink-0">
                 {/* spinning dashed ring */}
                 <div
                   aria-hidden
@@ -224,21 +224,20 @@ export default function DatabaseUsageCard() {
                   }}
                 />
                 <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center"
+                  className="w-9 md:w-10 h-9 md:h-10 rounded-lg md:rounded-xl flex items-center justify-center flex-shrink-0"
                   style={{
                     background: 'linear-gradient(135deg, #1a5c3a, #0f3d26)',
                     boxShadow: '0 4px 12px rgba(26,92,58,0.3)',
                   }}
                 >
-                  <Icons.bookmark size={18} className="text-white" />
+                  <Icons.bookmark size={16} className="text-white" />
                 </div>
               </div>
 
-              <div>
-                <h3 className="text-[15px] font-black text-gray-900 tracking-tight leading-none">
+              <div className="min-w-0">
+                <h3 className="text-sm md:text-[15px] font-black text-gray-900 tracking-tight leading-none">
                   Storage Usage
                 </h3>
-              
               </div>
             </div>
 
@@ -247,34 +246,34 @@ export default function DatabaseUsageCard() {
           {/* ── Overall capacity summary bar ────────────────────────────── */}
           {!loading && databases.length > 0 && (
             <div
-              className="flex items-center gap-4 p-4 rounded-xl mb-5"
+              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 md:gap-4 p-3 md:p-4 rounded-lg md:rounded-xl mb-3 md:mb-5"
               style={{ background: '#f0faf4', border: '1px solid #d1fae5' }}
             >
               {/* Arc */}
-              <div className="relative flex-shrink-0">
+              <div className="relative flex-shrink-0 flex justify-center sm:justify-start">
                 <ArcProgress
                   progress={mounted ? overallPct : 0}
                   color="#1a5c3a"
                   glow="rgba(26,92,58,0.4)"
-                  size={64}
+                  size={56}
                 />
                 <span
                   className="absolute inset-0 flex items-center justify-center"
-                  style={{ fontSize: 12, fontWeight: 900, color: '#1a5c3a' }}
+                  style={{ fontSize: 11, fontWeight: 900, color: '#1a5c3a' }}
                 >
                   {overallPct}%
                 </span>
               </div>
 
               {/* Text */}
-              <div>
-                <p className="text-sm font-black text-gray-900">Overall Capacity</p>
-                <p className="text-xs text-gray-400 mt-0.5">
+              <div className="flex-1 min-w-0">
+                <p className="text-xs md:text-sm font-black text-gray-900">Overall Capacity</p>
+                <p className="text-[10px] md:text-xs text-gray-400 mt-0.5">
                   {formatMB(totalUsed)} MB of {formatMB(totalMax)} MB used
                 </p>
-                <div className="flex items-center gap-1.5 mt-2">
-                  <span className="w-2 h-2 rounded-full" style={{ background: '#22c55e' }} />
-                  <span className="text-[10px] font-semibold" style={{ color: '#16a34a' }}>
+                <div className="flex items-center gap-1.5 mt-1 md:mt-2">
+                  <span className="w-1 md:w-1.5 h-1 md:h-1.5 rounded-full flex-shrink-0" style={{ background: '#22c55e' }} />
+                  <span className="text-[9px] md:text-[10px] font-semibold" style={{ color: '#16a34a' }}>
                     {formatMB(totalMax - totalUsed)} MB free
                   </span>
                 </div>
@@ -283,33 +282,32 @@ export default function DatabaseUsageCard() {
           )}
 
           {/* ── DB list ─────────────────────────────────────────────────── */}
-          <div className="space-y-2.5">
+          <div className="space-y-1.5 md:space-y-2">
             {loading ? (
               [1, 2, 3].map((i) => (
                 <div
                   key={i}
-                  className="flex items-center gap-4 p-3.5 rounded-xl animate-pulse"
+                  className="flex items-center gap-2 md:gap-3 p-2.5 md:p-3.5 rounded-lg md:rounded-xl animate-pulse"
                   style={{ background: '#f9fafb' }}
                 >
-                  <div className="w-11 h-11 rounded-xl bg-gray-100 flex-shrink-0" />
-                  <div className="flex-1 space-y-2">
-                    <div className="h-3 w-24 bg-gray-100 rounded-full" />
+                  <div className="w-9 md:w-11 h-9 md:h-11 rounded-lg md:rounded-xl bg-gray-100 flex-shrink-0" />
+                  <div className="flex-1 space-y-1.5">
+                    <div className="h-2 md:h-3 w-24 bg-gray-100 rounded-full" />
                     <div className="h-2 w-full bg-gray-100 rounded-full" />
-                    <div className="h-2 w-16 bg-gray-100 rounded-full" />
+                    <div className="h-1.5 md:h-2 w-16 bg-gray-100 rounded-full" />
                   </div>
-                  <div className="w-10 h-10 rounded-full bg-gray-100 flex-shrink-0" />
                 </div>
               ))
             ) : databases.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-10 text-center">
+              <div className="flex flex-col items-center justify-center py-6 md:py-10 text-center px-2">
                 <div
-                  className="w-14 h-14 rounded-2xl flex items-center justify-center mb-3"
+                  className="w-10 md:w-14 h-10 md:h-14 rounded-xl md:rounded-2xl flex items-center justify-center mb-2 md:mb-3"
                   style={{ background: '#f0faf4' }}
                 >
-                  <Icons.bookmark size={24} style={{ color: '#d1fae5' }} />
+                  <Icons.bookmark size={20} style={{ color: '#d1fae5' }} />
                 </div>
-                <p className="text-sm font-bold text-gray-500">No databases found</p>
-                <p className="text-xs text-gray-400 mt-1">Create a database to see storage usage</p>
+                <p className="text-xs md:text-sm font-bold text-gray-500">No databases found</p>
+                <p className="text-[10px] md:text-xs text-gray-400 mt-0.5 md:mt-1">Create a database to see storage usage</p>
               </div>
             ) : (
               databases.map((db, index) => {
@@ -325,16 +323,16 @@ export default function DatabaseUsageCard() {
                 return (
                   <div
                     key={db.name}
-                    className="du-row group relative rounded-xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md"
+                    className="du-row group relative rounded-lg md:rounded-xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md p-2.5 md:p-3.5"
                     style={{
                       background: theme.soft,
                       border: `1px solid ${theme.ring}`,
                       animationDelay: `${index * 100}ms`,
                     }}
                   >
-                    <div className="p-3.5 flex items-center gap-3.5">
 
-                      {/* Avatar with status dot */}
+                    {/* Avatar with status dot */}
+                    <div className="flex items-center gap-2 md:gap-3.5 mb-2 md:mb-0">
                       <div className="relative flex-shrink-0">
                         <DbAvatar
                           name={db.name}
@@ -343,19 +341,19 @@ export default function DatabaseUsageCard() {
                         />
                         {/* Health pulse dot */}
                         <span
-                          className="absolute -top-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-white"
+                          className="absolute -top-0.5 -right-0.5 w-2.5 md:w-3 h-2.5 md:h-3 rounded-full border border-white"
                           style={{ background: statusColor, boxShadow: `0 0 5px ${statusColor}` }}
                         />
                       </div>
 
-                      {/* Name + bar + sizes */}
+                      {/* Name + percentage */}
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between mb-1.5">
-                          <p className="text-sm font-black text-gray-900 truncate tracking-tight">
+                        <div className="flex items-center justify-between gap-1.5 md:gap-2 mb-1">
+                          <p className="text-xs md:text-sm font-bold md:font-black text-gray-900 truncate tracking-tight">
                             {db.name}
                           </p>
                           <span
-                            className="text-xs font-black ml-2 flex-shrink-0"
+                            className="text-[9px] md:text-xs font-black flex-shrink-0"
                             style={{ color: theme.color }}
                           >
                             {progress}%
@@ -364,7 +362,7 @@ export default function DatabaseUsageCard() {
 
                         {/* Progress bar */}
                         <div
-                          className="relative h-2 rounded-full overflow-hidden"
+                          className="relative h-1 md:h-2 rounded-full overflow-hidden"
                           style={{ background: 'rgba(0,0,0,0.05)' }}
                         >
                           <div
@@ -378,32 +376,17 @@ export default function DatabaseUsageCard() {
                           />
                         </div>
 
-                        <div className="flex items-center justify-between mt-1.5">
-                          <span className="text-[10px] text-gray-400 font-semibold">
-                            {formatMB(db.size)} MB used
+                        <div className="flex items-center justify-between mt-1 gap-1">
+                          <span className="text-[9px] md:text-[10px] text-gray-400 font-semibold truncate">
+                            {formatMB(db.size)} MB
                           </span>
-                          <span className="text-[10px] text-gray-400">
-                            of {formatMB(db.maxSize)} MB
+                          <span className="text-[9px] md:text-[10px] text-gray-400 flex-shrink-0">
+                            {formatMB(db.maxSize)} MB
                           </span>
                         </div>
                       </div>
-
-                      {/* Mini arc */}
-                      {/* <div className="flex-shrink-0 relative">
-                        <ArcProgress
-                          progress={mounted ? progress : 0}
-                          color={theme.color}
-                          glow={theme.glow}
-                          size={40}
-                        />
-                        <span
-                          className="absolute inset-0 flex items-center justify-center"
-                          style={{ fontSize: 8, fontWeight: 900, color: theme.color }}
-                        >
-                          {progress}%
-                        </span>
-                      </div> */}
                     </div>
+
                   </div>
                 );
               })
