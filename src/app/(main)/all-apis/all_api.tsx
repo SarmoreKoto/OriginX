@@ -195,31 +195,31 @@ function ApiCard({ endpoint }: { endpoint: ApiEndpoint }) {
   };
 
   return (
-    <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden hover:border-gray-300 hover:shadow-md transition-all">
+    <div className="bg-white border border-gray-200 rounded-lg md:rounded-2xl shadow-sm overflow-hidden hover:border-gray-300 hover:shadow-md transition-all">
       {/* Main row */}
-      <div className="flex items-center gap-4 px-5 py-4">
+      <div className="flex flex-col md:flex-row items-start md:items-center gap-3 md:gap-4 px-4 md:px-5 py-3 md:py-4">
         {/* Method badge */}
-        <span className={`text-[11px] font-bold px-2.5 py-1 rounded-lg border flex-shrink-0 font-mono ${style.bg} ${style.text} ${style.border}`}>
+        <span className={`text-[10px] md:text-[11px] font-bold px-2.5 py-1 rounded-lg border flex-shrink-0 font-mono ${style.bg} ${style.text} ${style.border}`}>
           {endpoint.method}
         </span>
 
-        {/* URL */}
-        <div className="flex-1 min-w-0">
+        {/* Name and URL */}
+        <div className="flex-1 min-w-0 w-full md:w-auto">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-sm font-bold text-gray-900">{endpoint.name}</span>
-            <span className="text-[10px] font-semibold text-gray-400 bg-gray-50 border border-gray-200 px-2 py-0.5 rounded-full">
+            <span className="text-xs md:text-sm font-bold text-gray-900">{endpoint.name}</span>
+            <span className="text-[9px] md:text-[10px] font-semibold text-gray-400 bg-gray-50 border border-gray-200 px-2 py-0.5 rounded-full">
               {endpoint.category}
             </span>
           </div>
-          <p className="text-xs font-mono text-gray-400 mt-0.5 truncate">{endpoint.url}</p>
+          <p className="text-[10px] md:text-xs font-mono text-gray-400 mt-1 md:mt-0.5 break-all md:truncate">{endpoint.url}</p>
         </div>
 
-        {/* Actions */}
-        <div className="flex items-center gap-2 flex-shrink-0">
+        {/* Actions — responsive layout */}
+        <div className="flex items-center gap-2 flex-shrink-0 self-end md:self-auto">
           {/* Expand */}
           <button
             onClick={() => setExpanded((e) => !e)}
-            className="w-8 h-8 rounded-xl bg-gray-50 border border-gray-200 hover:bg-indigo-50 hover:border-indigo-200 flex items-center justify-center text-gray-400 hover:text-indigo-500 transition-all"
+            className="w-7 md:w-8 h-7 md:h-8 rounded-lg md:rounded-xl bg-gray-50 border border-gray-200 hover:bg-indigo-50 hover:border-indigo-200 flex items-center justify-center text-gray-400 hover:text-indigo-500 transition-all flex-shrink-0"
             title="View details"
           >
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className={`transition-transform ${expanded ? "rotate-180" : ""}`}>
@@ -230,7 +230,7 @@ function ApiCard({ endpoint }: { endpoint: ApiEndpoint }) {
           {/* Copy */}
           <button
             onClick={copyUrl}
-            className="w-8 h-8 rounded-xl bg-gray-50 border border-gray-200 hover:bg-green-50 hover:border-green-200 flex items-center justify-center text-gray-400 hover:text-green-600 transition-all"
+            className="w-7 md:w-8 h-7 md:h-8 rounded-lg md:rounded-xl bg-gray-50 border border-gray-200 hover:bg-green-50 hover:border-green-200 flex items-center justify-center text-gray-400 hover:text-green-600 transition-all flex-shrink-0"
             title="Copy URL"
           >
             {copied ? (
@@ -243,7 +243,7 @@ function ApiCard({ endpoint }: { endpoint: ApiEndpoint }) {
           {/* Open (GET only) */}
           <button
             onClick={openUrl}
-            className={`w-8 h-8 rounded-xl border flex items-center justify-center transition-all ${
+            className={`w-7 md:w-8 h-7 md:h-8 rounded-lg md:rounded-xl border flex items-center justify-center transition-all flex-shrink-0 ${
               endpoint.method === "GET" && !endpoint.url.includes(":")
                 ? "bg-indigo-50 border-indigo-200 text-indigo-500 hover:bg-indigo-100"
                 : "bg-gray-50 border-gray-200 text-gray-300 cursor-not-allowed"
@@ -260,15 +260,15 @@ function ApiCard({ endpoint }: { endpoint: ApiEndpoint }) {
 
       {/* Expanded details */}
       {expanded && (
-        <div className="border-t border-gray-100 bg-gray-50/50 px-5 py-4 flex flex-col gap-3">
-          <p className="text-xs text-gray-500">{endpoint.description}</p>
+        <div className="border-t border-gray-100 bg-gray-50/50 px-4 md:px-5 py-3 md:py-4 flex flex-col gap-3">
+          <p className="text-xs md:text-sm text-gray-500">{endpoint.description}</p>
 
           {endpoint.params && endpoint.params.length > 0 && (
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1.5">URL Params</p>
+              <p className="text-[9px] md:text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1.5">URL Params</p>
               <div className="flex gap-1.5 flex-wrap">
                 {endpoint.params.map((p) => (
-                  <span key={p} className="text-[11px] font-mono font-semibold bg-amber-50 text-amber-700 border border-amber-200 px-2.5 py-1 rounded-lg">
+                  <span key={p} className="text-[10px] md:text-[11px] font-mono font-semibold bg-amber-50 text-amber-700 border border-amber-200 px-2.5 py-1 rounded-lg">
                     :{p}
                   </span>
                 ))}
@@ -278,9 +278,9 @@ function ApiCard({ endpoint }: { endpoint: ApiEndpoint }) {
 
           {endpoint.body && (
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1.5">Request Body</p>
-              <div className="bg-white border border-gray-200 rounded-xl p-3">
-                <pre className="text-[11px] font-mono text-blue-600 whitespace-pre-wrap">
+              <p className="text-[9px] md:text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1.5">Request Body</p>
+              <div className="bg-white border border-gray-200 rounded-lg md:rounded-xl p-2 md:p-3 overflow-x-auto">
+                <pre className="text-[10px] md:text-[11px] font-mono text-blue-600 whitespace-pre-wrap">
                   {JSON.stringify(endpoint.body, null, 2)}
                 </pre>
               </div>
@@ -289,10 +289,10 @@ function ApiCard({ endpoint }: { endpoint: ApiEndpoint }) {
 
           {/* Full URL row */}
           <div>
-            <p className="text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1.5">Full URL</p>
-            <div className="flex items-center gap-2 bg-gray-900 rounded-xl px-4 py-2.5">
-              <span className={`text-[10px] font-bold font-mono ${style.text}`}>{endpoint.method}</span>
-              <span className="text-xs font-mono text-gray-200 flex-1 truncate">{endpoint.url}</span>
+            <p className="text-[9px] md:text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1.5">Full URL</p>
+            <div className="flex items-center gap-2 bg-gray-900 rounded-lg md:rounded-xl px-3 md:px-4 py-2">
+              <span className={`text-[9px] md:text-[10px] font-bold font-mono flex-shrink-0 ${style.text}`}>{endpoint.method}</span>
+              <span className="text-[10px] md:text-xs font-mono text-gray-200 flex-1 truncate">{endpoint.url}</span>
               <button onClick={copyUrl} className="text-gray-500 hover:text-white transition-colors flex-shrink-0">
                 {copied ? (
                   <svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#22c55e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
@@ -330,27 +330,29 @@ export default function AllApisPage() {
 
   return (
     <div className="min-h-screen bg-[#f4f6fb] font-sans">
-      <div className="p-6">
+      <div className="p-4 md:p-6">
         {/* Header */}
-        <div className="flex items-start justify-between mb-6">
-          <div>
-            <h1 className="text-2xl font-extrabold text-gray-900 tracking-tight">All APIs</h1>
-            <p className="text-sm text-gray-500 mt-1">All available API endpoints — click to open, copy URLs, view request details</p>
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6">
+          <div className="w-full md:w-auto">
+            <h1 className="text-xl md:text-2xl font-extrabold text-gray-900 tracking-tight">All APIs</h1>
+            <p className="text-xs md:text-sm text-gray-500 mt-1">All available API endpoints — click to open, copy URLs, view request details</p>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold text-indigo-700 bg-indigo-50 border border-indigo-200 px-3 py-1.5 rounded-full">
-              {ENDPOINTS.length} endpoints
-            </span>
-            <span className="text-xs font-semibold text-gray-500 bg-white border border-gray-200 px-3 py-1.5 rounded-full">
-              {BASE}
-            </span>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full md:w-auto">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-xs font-semibold text-indigo-700 bg-indigo-50 border border-indigo-200 px-3 py-1.5 rounded-full whitespace-nowrap">
+                {ENDPOINTS.length} endpoints
+              </span>
+              <span className="text-xs font-semibold text-gray-500 bg-white border border-gray-200 px-3 py-1.5 rounded-full truncate">
+                {BASE}
+              </span>
+            </div>
           </div>
         </div>
 
         {/* Filters */}
-        <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-4 mb-5 flex items-center gap-4 flex-wrap">
+        <div className="bg-white border border-gray-200 rounded-lg md:rounded-2xl shadow-sm p-3 md:p-4 mb-5 flex flex-col gap-3 md:gap-4">
           {/* Search */}
-          <div className="relative flex-1 min-w-[200px]">
+          <div className="relative w-full">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
               <circle cx="6" cy="6" r="4.5" stroke="currentColor" strokeWidth="1.4" />
               <path d="M10.5 10.5l2 2" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
@@ -359,70 +361,75 @@ export default function AllApisPage() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search endpoints…"
-              className="w-full pl-9 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-700 placeholder-gray-400 outline-none focus:border-indigo-300 transition-all"
+              className="w-full pl-9 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg md:rounded-xl text-xs md:text-sm text-gray-700 placeholder-gray-400 outline-none focus:border-indigo-300 transition-all"
             />
           </div>
 
-          {/* Category filter */}
-          <div className="flex items-center gap-1.5 flex-wrap">
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`text-xs font-semibold px-3 py-1.5 rounded-xl border transition-all ${
-                  activeCategory === cat
-                    ? "bg-indigo-600 text-white border-indigo-600 shadow-sm"
-                    : "bg-gray-50 text-gray-500 border-gray-200 hover:border-gray-300 hover:text-gray-800"
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
+          {/* Category and Method filters */}
+          <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
+            {/* Category filter */}
+            <div className="flex-1 overflow-x-auto">
+              <div className="flex items-center gap-1 flex-nowrap">
+                {CATEGORIES.map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => setActiveCategory(cat)}
+                    className={`text-xs font-semibold px-2.5 md:px-3 py-1.5 rounded-lg md:rounded-xl border transition-all flex-shrink-0 whitespace-nowrap ${
+                      activeCategory === cat
+                        ? "bg-indigo-600 text-white border-indigo-600 shadow-sm"
+                        : "bg-gray-50 text-gray-500 border-gray-200 hover:border-gray-300 hover:text-gray-800"
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            </div>
 
-          {/* Divider */}
-          <div className="w-px h-6 bg-gray-200 flex-shrink-0" />
+            {/* Divider */}
+            <div className="hidden sm:block w-px h-6 bg-gray-200 flex-shrink-0" />
 
-          {/* Method filter */}
-          <div className="flex items-center gap-1.5">
-            {METHODS.map((m) => {
-              const s = m !== "All" ? METHOD_STYLES[m] : null;
-              return (
-                <button
-                  key={m}
-                  onClick={() => setActiveMethod(m)}
-                  className={`text-[11px] font-bold px-2.5 py-1.5 rounded-lg border transition-all font-mono ${
-                    activeMethod === m
-                      ? m === "All"
-                        ? "bg-gray-900 text-white border-gray-900"
-                        : `${s!.bg} ${s!.text} ${s!.border} ring-2 ring-offset-1 ring-current`
-                      : "bg-gray-50 text-gray-400 border-gray-200 hover:border-gray-300"
-                  }`}
-                >
-                  {m}
-                </button>
-              );
-            })}
+            {/* Method filter */}
+            <div className="flex items-center gap-1 overflow-x-auto flex-nowrap">
+              {METHODS.map((m) => {
+                const s = m !== "All" ? METHOD_STYLES[m] : null;
+                return (
+                  <button
+                    key={m}
+                    onClick={() => setActiveMethod(m)}
+                    className={`text-[10px] md:text-[11px] font-bold px-2 md:px-2.5 py-1.5 rounded-lg border transition-all font-mono flex-shrink-0 whitespace-nowrap ${
+                      activeMethod === m
+                        ? m === "All"
+                          ? "bg-gray-900 text-white border-gray-900"
+                          : `${s!.bg} ${s!.text} ${s!.border} ring-2 ring-offset-1 ring-current`
+                        : "bg-gray-50 text-gray-400 border-gray-200 hover:border-gray-300"
+                    }`}
+                  >
+                    {m}
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
 
         {/* Endpoint groups */}
         {Object.keys(grouped).length === 0 ? (
-          <div className="bg-white border border-gray-200 rounded-2xl shadow-sm flex flex-col items-center justify-center py-20 gap-3">
+          <div className="bg-white border border-gray-200 rounded-lg md:rounded-2xl shadow-sm flex flex-col items-center justify-center py-16 md:py-20 gap-3 px-4">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-gray-300"><circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="1.5" /><path d="M21 21l-4.35-4.35" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
-            <p className="text-sm font-semibold text-gray-400">No endpoints match your filters</p>
+            <p className="text-xs md:text-sm font-semibold text-gray-400 text-center">No endpoints match your filters</p>
           </div>
         ) : (
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-4 md:gap-6">
             {Object.entries(grouped).map(([category, endpoints]) => (
               <div key={category}>
                 {/* Category header */}
-                <div className="flex items-center gap-3 mb-3">
-                  <h2 className="text-sm font-bold text-gray-700">{category}</h2>
-                  <span className="text-[10px] font-bold bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full">{endpoints.length}</span>
-                  <div className="flex-1 h-px bg-gray-200" />
+                <div className="flex items-center gap-2 md:gap-3 mb-2 md:mb-3">
+                  <h2 className="text-xs md:text-sm font-bold text-gray-700">{category}</h2>
+                  <span className="text-[9px] md:text-[10px] font-bold bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full flex-shrink-0">{endpoints.length}</span>
+                  <div className="flex-1 h-px bg-gray-200 hidden md:block" />
                 </div>
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2 md:gap-3">
                   {endpoints.map((ep, i) => <ApiCard key={i} endpoint={ep} />)}
                 </div>
               </div>

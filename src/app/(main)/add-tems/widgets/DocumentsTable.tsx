@@ -7,7 +7,6 @@ interface DocumentsTableProps {
   collectionName: string;
 }
 
-// Avatar color palette matching the screenshot
 const AVATAR_COLORS = [
   { bg: "#0d9488", text: "#fff" },
   { bg: "#f59e0b", text: "#fff" },
@@ -35,7 +34,6 @@ export default function DocumentsTable({ documents, collectionName }: DocumentsT
     new Set(documents.flatMap((d) => Object.keys(d).filter((k) => k !== "_insertedAt")))
   );
 
-  // Detect a "name-like" key for avatar display
   const nameKey = allKeys.find((k) => /name|user|title/i.test(k));
   const statusKey = allKeys.find((k) => /status|state|active/i.test(k));
   const roleKey = allKeys.find((k) => /role|type|kind/i.test(k));
@@ -44,7 +42,6 @@ export default function DocumentsTable({ documents, collectionName }: DocumentsT
     !search.trim() || Object.values(doc).some((v) => String(v).toLowerCase().includes(search.toLowerCase()))
   );
 
-  // Build dynamic filter tabs from status/role key if present
   const filterKey = statusKey ?? roleKey;
   const filterValues = filterKey
     ? ["All", ...Array.from(new Set(documents.map((d) => String(d[filterKey] ?? ""))))]
@@ -71,25 +68,25 @@ export default function DocumentsTable({ documents, collectionName }: DocumentsT
   return (
     <div className="mt-2">
       {/* ── Header ── */}
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-3">
-          {/* Section title with left border — matches screenshot */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
+        <div className="flex items-center gap-2 md:gap-3 flex-wrap w-full sm:w-auto">
+          {/* Section title */}
           <div className="flex items-center gap-2.5">
             <span className="w-[3px] h-[16px] rounded-full bg-[#0d3d26] block flex-shrink-0" />
-            <h3 className="text-[11px] font-bold text-gray-500 uppercase tracking-widest">All Records</h3>
+            <h3 className="text-[11px] font-bold text-gray-500 uppercase tracking-widest">Records</h3>
             <span className="text-[10px] font-bold bg-[#0d3d26]/10 text-[#0d3d26] border border-[#0d3d26]/20 px-2 py-0.5 rounded-full">
               {documents.length}
             </span>
           </div>
 
-          {/* Filter tabs */}
+          {/* Filter tabs — scrollable on mobile */}
           {filterValues.length > 1 && (
-            <div className="flex items-center gap-1 ml-2">
+            <div className="flex items-center gap-1 ml-2 overflow-x-auto pb-1">
               {filterValues.map((f) => (
                 <button
                   key={f}
                   onClick={() => setActiveFilter(f)}
-                  className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all ${
+                  className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all flex-shrink-0 ${
                     activeFilter === f
                       ? "text-white shadow-sm"
                       : "bg-white border border-gray-200 text-gray-500 hover:border-gray-300"
@@ -104,41 +101,41 @@ export default function DocumentsTable({ documents, collectionName }: DocumentsT
         </div>
 
         {/* Search */}
-        <div className="relative">
-          <svg width="13" height="13" viewBox="0 0 14 14" fill="none" className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+        <div className="relative w-full sm:w-48">
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none" className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 flex-shrink-0">
             <circle cx="6" cy="6" r="4.5" stroke="currentColor" strokeWidth="1.4" />
             <path d="M10.5 10.5l2 2" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
           </svg>
           <input
-            className="bg-gray-50 border border-gray-200 rounded-xl pl-8 pr-3 py-2 text-xs text-gray-700 placeholder-gray-400 outline-none focus:border-[#0d3d26]/40 focus:bg-white transition-all w-48"
-            placeholder="Search records…"
+            className="w-full bg-gray-50 border border-gray-200 rounded-xl pl-8 pr-3 py-2 text-xs text-gray-700 placeholder-gray-400 outline-none focus:border-[#0d3d26]/40 focus:bg-white transition-all"
+            placeholder="Search…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
       </div>
 
-      {/* ── Table ── */}
+      {/* ── Table — Scrollable container ── */}
       <div className="rounded-2xl border border-gray-200 overflow-hidden bg-white">
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="w-full min-w-full">
             <thead>
               <tr className="bg-gray-50/80 border-b border-gray-200">
-                <th className="text-left px-5 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-widest w-12">S.NO</th>
+                <th className="text-left px-3 md:px-5 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-widest w-10 md:w-12 flex-shrink-0">No</th>
                 {nameKey && (
-                  <th className="text-left px-5 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                  <th className="text-left px-3 md:px-5 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
                     {nameKey.toUpperCase()}
                   </th>
                 )}
                 {allKeys.filter((k) => k !== nameKey).map((key) => (
-                  <th key={key} className="text-left px-5 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-widest whitespace-nowrap">
-                    {key.toUpperCase()}
+                  <th key={key} className="text-left px-3 md:px-5 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-widest whitespace-nowrap">
+                    {key.length > 12 ? key.slice(0, 10) + "…" : key.toUpperCase()}
                   </th>
                 ))}
-                <th className="text-left px-5 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-widest whitespace-nowrap">
-                  INSERTED AT
+                <th className="text-left px-3 md:px-5 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-widest whitespace-nowrap">
+                  Time
                 </th>
-                <th className="text-right px-5 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-widest">ACTIONS</th>
+                <th className="text-right px-3 md:px-5 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
@@ -150,7 +147,7 @@ export default function DocumentsTable({ documents, collectionName }: DocumentsT
                         <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.5" />
                         <path d="M20 20l5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                       </svg>
-                      <span className="text-xs font-medium text-gray-400">No records match your search</span>
+                      <span className="text-xs font-medium text-gray-400">No records found</span>
                     </div>
                   </td>
                 </tr>
@@ -161,30 +158,30 @@ export default function DocumentsTable({ documents, collectionName }: DocumentsT
 
                   return (
                     <tr key={i} className="hover:bg-[#f0faf4]/60 transition-colors group">
-                      {/* S.NO — rounded square badge matching screenshot */}
-                      <td className="px-5 py-3.5">
+                      {/* No badge */}
+                      <td className="px-3 md:px-5 py-3.5 flex-shrink-0">
                         <span className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-gray-100 text-[11px] font-bold text-gray-500 font-mono">
                           {i + 1}
                         </span>
                       </td>
 
-                      {/* Name column with avatar — if name key exists */}
+                      {/* Name with avatar */}
                       {nameKey && (
-                        <td className="px-5 py-3.5">
-                          <div className="flex items-center gap-3">
+                        <td className="px-3 md:px-5 py-3.5 min-w-0">
+                          <div className="flex items-center gap-2 md:gap-3">
                             <div
                               className="w-8 h-8 rounded-lg flex items-center justify-center text-[11px] font-bold flex-shrink-0"
                               style={{ background: avatarColor.bg, color: avatarColor.text }}
                             >
                               {getInitials(nameVal)}
                             </div>
-                            <div>
-                              <p className="text-xs font-semibold text-gray-800">{nameVal}</p>
-                             {typeof doc._insertedAt === "string" && (
-  <p className="text-[10px] text-gray-400 font-mono">
-    Joined {new Date(doc._insertedAt).toLocaleDateString()}
-  </p>
-)}
+                            <div className="min-w-0 hidden sm:block">
+                              <p className="text-xs font-semibold text-gray-800 truncate">{nameVal}</p>
+                              {typeof doc._insertedAt === "string" && (
+                                <p className="text-[10px] text-gray-400 font-mono">
+                                  {new Date(doc._insertedAt).toLocaleDateString()}
+                                </p>
+                              )}
                             </div>
                           </div>
                         </td>
@@ -199,7 +196,7 @@ export default function DocumentsTable({ documents, collectionName }: DocumentsT
                         if (key === roleKey && strVal) {
                           const rs = roleBadgeStyle(strVal);
                           return (
-                            <td key={key} className="px-5 py-3.5">
+                            <td key={key} className="px-3 md:px-5 py-3.5 hidden md:table-cell">
                               <span
                                 className="inline-flex items-center px-2.5 py-0.5 rounded-md text-[10px] font-bold uppercase border"
                                 style={{ background: rs.bg, color: rs.text, borderColor: rs.border }}
@@ -214,14 +211,13 @@ export default function DocumentsTable({ documents, collectionName }: DocumentsT
                         if (key === statusKey && strVal) {
                           const active = isActive(val);
                           return (
-                            <td key={key} className="px-5 py-3.5">
+                            <td key={key} className="px-3 md:px-5 py-3.5 hidden md:table-cell">
                               <div className="flex items-center gap-2">
-                                {/* Toggle pill */}
                                 <div className={`relative w-9 h-5 rounded-full transition-colors flex-shrink-0 ${active ? "bg-[#0d3d26]" : "bg-gray-300"}`}>
                                   <span className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow-sm transition-all ${active ? "left-4" : "left-0.5"}`} />
                                 </div>
                                 <span className={`text-xs font-semibold ${active ? "text-[#0d3d26]" : "text-gray-400"}`}>
-                                  {active ? "ACTIVE" : "INACTIVE"}
+                                  {active ? "ON" : "OFF"}
                                 </span>
                               </div>
                             </td>
@@ -230,33 +226,39 @@ export default function DocumentsTable({ documents, collectionName }: DocumentsT
 
                         // Default cell
                         return (
-                          <td key={key} className="px-5 py-3.5 text-xs text-gray-600 font-mono whitespace-nowrap max-w-[200px] truncate">
+                          <td key={key} className="px-3 md:px-5 py-3.5 text-xs text-gray-600 font-mono whitespace-nowrap max-w-[100px] md:max-w-[200px] truncate hidden md:table-cell">
                             {val !== undefined ? strVal : <span className="text-gray-300 italic">—</span>}
                           </td>
                         );
                       })}
 
-                      {/* Inserted At */}
-                      <td className="px-5 py-3.5 text-[11px] text-gray-400 font-mono whitespace-nowrap">
+                      {/* Time */}
+                      <td className="px-3 md:px-5 py-3.5 text-[11px] text-gray-400 font-mono whitespace-nowrap hidden sm:table-cell">
                         {doc._insertedAt
-                          ? new Date(doc._insertedAt as string).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })
+                          ? new Date(doc._insertedAt as string).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
                           : "—"}
                       </td>
 
-                      {/* Actions — hidden until row hover, matching screenshot */}
-                      <td className="px-5 py-3.5 text-right">
+                      {/* Actions */}
+                      <td className="px-3 md:px-5 py-3.5 text-right">
                         <div className="flex items-center justify-end gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <button className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-gray-200 text-xs font-semibold text-gray-500 hover:text-[#0d3d26] hover:border-[#0d3d26]/30 bg-white transition-all">
+                          <button className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-gray-200 text-xs font-semibold text-gray-500 hover:text-[#0d3d26] hover:border-[#0d3d26]/30 bg-white transition-all hidden sm:flex">
                             <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
                               <path d="M8.5 1.5a1.2 1.2 0 0 1 1.7 1.7L3.5 9.9l-2.5.6.6-2.5L8.5 1.5z" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
                             </svg>
-                            Edit
+                            <span className="hidden md:inline">Edit</span>
                           </button>
-                          <button className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-transparent text-xs font-semibold text-red-400 hover:text-red-600 hover:bg-red-50 hover:border-red-100 transition-all">
+                          <button className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-transparent text-xs font-semibold text-red-400 hover:text-red-600 hover:bg-red-50 hover:border-red-100 transition-all hidden sm:flex">
                             <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
                               <path d="M1.5 3h9M4.5 3V2.25h3V3M3.5 3l.5 6.5h4l.5-6.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
                             </svg>
-                            Delete
+                            <span className="hidden md:inline">Delete</span>
+                          </button>
+                          {/* Mobile compact view */}
+                          <button className="flex sm:hidden items-center justify-center w-8 h-8 rounded-lg text-red-500 hover:bg-red-50 transition-all">
+                            <svg width="14" height="14" viewBox="0 0 12 12" fill="none">
+                              <path d="M1.5 3h9M4.5 3V2.25h3V3M3.5 3l.5 6.5h4l.5-6.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
                           </button>
                         </div>
                       </td>
@@ -268,15 +270,17 @@ export default function DocumentsTable({ documents, collectionName }: DocumentsT
           </table>
         </div>
 
-        {/* Footer — "Showing X of Y" + Live dot — matches screenshot */}
-        <div className="flex items-center justify-between px-5 py-3 border-t border-gray-100 bg-gray-50/50">
+        {/* Footer */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 px-4 md:px-5 py-3 border-t border-gray-100 bg-gray-50/50">
           <span className="text-[11px] text-gray-400 font-medium">
-            Showing <span className="font-bold text-gray-600">{finalFiltered.length}</span> of{" "}
-            <span className="font-bold text-gray-600">{documents.length}</span> records
+            <span className="font-bold text-gray-600">{finalFiltered.length}</span>
+            <span className="hidden sm:inline"> of </span>
+            <span className="hidden sm:inline font-bold text-gray-600">{documents.length}</span>
           </span>
           <div className="flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-            <span className="text-[10px] font-semibold text-gray-400">Live data</span>
+            <span className="text-[10px] font-semibold text-gray-400 hidden sm:inline">Live data</span>
+            <span className="text-[10px] font-semibold text-gray-400 sm:hidden">Live</span>
           </div>
         </div>
       </div>

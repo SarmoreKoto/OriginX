@@ -14,6 +14,7 @@ interface CollectionCardProps {
 const CARD_COLORS = [
   "#0d3d26", "#0d9488", "#7c3aed", "#0369a1", "#b45309", "#0f766e", "#4338ca",
 ];
+
 function cardColor(name: string) {
   let h = 0;
   for (let i = 0; i < name.length; i++) h = (h + name.charCodeAt(i)) % CARD_COLORS.length;
@@ -36,7 +37,7 @@ export default function CollectionCard({
       onClick={onSelect}
       className={`
         group relative flex flex-col gap-2.5 p-3.5 rounded-xl border cursor-pointer
-        transition-all duration-150 select-none
+        transition-all duration-150 select-none min-h-[120px] sm:min-h-0
         ${isSelected
           ? "border-transparent shadow-lg"
           : "border-gray-200 hover:border-gray-300 hover:shadow-sm bg-white"
@@ -63,7 +64,7 @@ export default function CollectionCard({
       </div>
 
       {/* Collection name */}
-      <div>
+      <div className="flex-1 min-w-0">
         <p className={`text-xs font-bold truncate ${isSelected ? "text-white" : "text-gray-800"}`}>
           {col.name}
         </p>

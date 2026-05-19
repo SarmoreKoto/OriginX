@@ -38,7 +38,7 @@ function TypePill({ type, onChange }: { type: FieldType; onChange: (t: FieldType
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-semibold border-none cursor-pointer transition-all hover:opacity-80"
+        className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-semibold border-none cursor-pointer transition-all hover:opacity-80 whitespace-nowrap"
         style={{ background: m.pillBg, color: m.pillText }}
       >
         <span className="w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0" style={{ background: m.iconBg }}>
@@ -73,7 +73,7 @@ function TypePill({ type, onChange }: { type: FieldType; onChange: (t: FieldType
 
 // ─── Value input ──────────────────────────────────────────────────────────────
 function ValInput({ field, onChange }: { field: FieldDef; onChange: (v: string) => void }) {
-  const cls = "w-full border-none bg-transparent px-4 py-[11px] text-sm font-mono text-gray-800 placeholder-gray-300 outline-none focus:bg-indigo-50/30";
+  const cls = "w-full border-none bg-transparent px-3 md:px-4 py-[11px] text-sm font-mono text-gray-800 placeholder-gray-300 outline-none focus:bg-indigo-50/30";
   if (field.type === "Boolean") return (
     <select value={field.value || "true"} onChange={(e) => onChange(e.target.value)} className={`${cls} cursor-pointer`}>
       <option value="true">true</option><option value="false">false</option>
@@ -149,29 +149,29 @@ export default function InsertDocumentForm({ dbName, collectionName, onInserted,
   return (
     <div>
       {/* Breadcrumb */}
-      <div className="flex items-center gap-2 mb-5">
-        <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-700 bg-indigo-50 border border-indigo-200 px-3 py-1 rounded-full">
-          <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 inline-block" />{dbName}
+      <div className="flex items-center gap-2 mb-4 md:mb-5 flex-wrap">
+        <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-700 bg-indigo-50 border border-indigo-200 px-3 py-1 rounded-full truncate">
+          <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 inline-block flex-shrink-0" />{dbName}
         </span>
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="text-gray-300">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="text-gray-300 hidden sm:block flex-shrink-0">
           <path d="M5 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
-        <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-green-700 bg-green-50 border border-green-200 px-3 py-1 rounded-full">
-          <span className="w-1.5 h-1.5 rounded-full bg-green-500 inline-block" />{collectionName}
+        <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-green-700 bg-green-50 border border-green-200 px-3 py-1 rounded-full truncate">
+          <span className="w-1.5 h-1.5 rounded-full bg-green-500 inline-block flex-shrink-0" />{collectionName}
         </span>
         {successCount > 0 && (
-          <span className="inline-flex items-center gap-1 text-[10px] font-bold text-green-600 bg-green-50 border border-green-200 px-2.5 py-0.5 rounded-full">
+          <span className="inline-flex items-center gap-1 text-[10px] font-bold text-green-600 bg-green-50 border border-green-200 px-2.5 py-0.5 rounded-full flex-shrink-0">
             ✓ {successCount} inserted
           </span>
         )}
       </div>
 
-      {/* ── Fields table — KEY | TYPE | VALUE ── */}
-      <div className="border border-gray-200 rounded-2xl overflow-visible mb-5 shadow-sm">
+      {/* ── Fields table — responsive ── */}
+      <div className="border border-gray-200 rounded-2xl overflow-x-auto mb-5 shadow-sm">
         {/* Header row */}
-        <div className="grid grid-cols-[1fr_170px_1fr_38px] bg-gray-50 border-b border-gray-200 rounded-t-2xl">
+        <div className="min-w-[600px] grid grid-cols-[1fr_170px_1fr_38px] bg-gray-50 border-b border-gray-200">
           {["KEY", "TYPE", "VALUE", ""].map((h, i) => (
-            <span key={i} className="px-4 py-3 text-[10px] font-bold uppercase tracking-widest text-gray-400">{h}</span>
+            <span key={i} className="px-3 md:px-4 py-3 text-[10px] font-bold uppercase tracking-widest text-gray-400">{h}</span>
           ))}
         </div>
 
@@ -183,17 +183,17 @@ export default function InsertDocumentForm({ dbName, collectionName, onInserted,
             onDragStart={() => handleDragStart(i)}
             onDragOver={(e) => e.preventDefault()}
             onDrop={() => handleDrop(i)}
-            className="grid grid-cols-[1fr_170px_1fr_38px] border-b border-gray-100 last:border-b-0 hover:bg-gray-50/50 transition-colors group"
+            className="min-w-[600px] grid grid-cols-[1fr_170px_1fr_38px] border-b border-gray-100 last:border-b-0 hover:bg-gray-50/50 transition-colors group"
           >
             {/* KEY */}
             <input
-              className="border-none border-r border-gray-100 bg-transparent px-4 py-[13px] text-sm font-mono text-gray-800 placeholder-gray-300 outline-none focus:bg-indigo-50/20 transition-colors"
+              className="border-none border-r border-gray-100 bg-transparent px-3 md:px-4 py-[13px] text-sm font-mono text-gray-800 placeholder-gray-300 outline-none focus:bg-indigo-50/20 transition-colors"
               placeholder="field_name"
               value={f.key}
               onChange={(e) => updKey(f.id, e.target.value)}
             />
             {/* TYPE pill */}
-            <div className="border-r border-gray-100 flex items-center px-3">
+            <div className="border-r border-gray-100 flex items-center px-2 md:px-3 overflow-x-auto">
               <TypePill type={f.type} onChange={(t) => updType(f.id, t)} />
             </div>
             {/* VALUE */}
@@ -217,21 +217,21 @@ export default function InsertDocumentForm({ dbName, collectionName, onInserted,
         ))}
       </div>
 
-      {/* ── Add field chips ── */}
-      <div className="flex items-center gap-2 flex-wrap mb-5">
-        <span className="text-xs font-semibold text-gray-500">Add field:</span>
+      {/* ── Add field chips — scrollable on mobile ── */}
+      <div className="flex items-center gap-2 flex-wrap mb-5 overflow-x-auto pb-2">
+        <span className="text-xs font-semibold text-gray-500 flex-shrink-0">Add field:</span>
         {ALL_TYPES.map((t) => {
           const m = TYPE_META[t];
           return (
             <button
               key={t} type="button" onClick={() => addField(t)}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all hover:shadow-sm hover:-translate-y-px cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all hover:shadow-sm hover:-translate-y-px cursor-pointer flex-shrink-0"
               style={{ background: m.pillBg, color: m.pillText, borderColor: `${m.iconBg}33` }}
             >
               <span className="w-[18px] h-[18px] rounded-[5px] flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0" style={{ background: m.iconBg }}>
                 {m.icon}
               </span>
-              {t}
+              <span className="hidden sm:inline">{t}</span>
             </button>
           );
         })}
@@ -240,16 +240,17 @@ export default function InsertDocumentForm({ dbName, collectionName, onInserted,
       {error && <p className="text-xs text-red-500 font-medium mb-4">{error}</p>}
 
       {/* ── Footer: Back + Insert ── */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col-reverse sm:flex-row items-center gap-3 justify-between mb-5">
         <button
           type="button" onClick={onBack}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-gray-200 text-sm font-medium text-gray-500 hover:text-gray-800 hover:border-gray-300 bg-white transition-all"
+          className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-gray-200 text-sm font-medium text-gray-500 hover:text-gray-800 hover:border-gray-300 bg-white transition-all"
         >
-          ← Back
+          ← <span className="hidden sm:inline">Back</span>
+          <span className="sm:hidden">Cancel</span>
         </button>
         <button
           type="button" onClick={handleInsert} disabled={loading}
-          className="flex items-center gap-2.5 px-7 py-2.5 rounded-xl bg-green-500 hover:bg-green-600 text-white text-sm font-bold transition-all shadow-md shadow-green-100 disabled:opacity-60 disabled:cursor-not-allowed active:scale-95"
+          className="w-full sm:w-auto flex items-center justify-center gap-2.5 px-5 md:px-7 py-2.5 rounded-xl bg-green-500 hover:bg-green-600 text-white text-sm font-bold transition-all shadow-md shadow-green-100 disabled:opacity-60 disabled:cursor-not-allowed active:scale-95"
         >
           {loading ? (
             <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
@@ -257,20 +258,24 @@ export default function InsertDocumentForm({ dbName, collectionName, onInserted,
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
             </svg>
           ) : (
-            <>Insert document <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M8 4l3 3-3 3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg></>
+            <>
+              <span className="hidden sm:inline">Insert document</span>
+              <span className="sm:hidden">Insert</span>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M8 4l3 3-3 3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            </>
           )}
         </button>
       </div>
 
-      {/* ── Preview JSON (collapsible) ── */}
-      <details className="mt-5 group">
+      {/* ── Preview JSON ── */}
+      <details className="group">
         <summary className="text-xs font-semibold text-indigo-500 cursor-pointer select-none hover:text-indigo-700 list-none flex items-center gap-1.5">
           <svg width="10" height="10" viewBox="0 0 10 10" fill="none" className="transition-transform group-open:rotate-90">
             <path d="M3 2l4 3-4 3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
           Preview JSON
         </summary>
-        <div className="mt-2 bg-indigo-50/60 border border-indigo-100 rounded-xl p-3">
+        <div className="mt-2 bg-indigo-50/60 border border-indigo-100 rounded-xl p-3 overflow-x-auto">
           <pre className="text-[11px] font-mono text-indigo-600 whitespace-pre-wrap break-words max-h-32 overflow-y-auto">
             {JSON.stringify(preview, null, 2) || "{}"}
           </pre>

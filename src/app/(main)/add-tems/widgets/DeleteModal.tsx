@@ -11,15 +11,15 @@ interface DeleteModalProps {
 export default function DeleteModal({ type, name, deleting, onConfirm, onCancel }: DeleteModalProps) {
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-[2px]"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-[2px] p-4"
       onClick={onCancel}
     >
       <div
-        className="bg-white border border-gray-200 rounded-2xl shadow-2xl p-7 w-[380px] flex flex-col items-center text-center gap-5"
+        className="bg-white border border-gray-200 rounded-2xl shadow-2xl p-5 md:p-7 w-full max-w-[380px] flex flex-col items-center text-center gap-5"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Icon */}
-        <div className="w-14 h-14 rounded-2xl bg-red-50 border border-red-100 flex items-center justify-center">
+        <div className="w-14 h-14 rounded-2xl bg-red-50 border border-red-100 flex items-center justify-center flex-shrink-0">
           <svg width="26" height="26" viewBox="0 0 26 26" fill="none" className="text-red-500">
             <path
               d="M3 6.5h20M9 6.5V5a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v1.5M10.5 11v8M15.5 11v8M5 6.5l1.2 14.2A2 2 0 0 0 8.2 22.5h9.6a2 2 0 0 0 2-1.8L21 6.5"
@@ -34,7 +34,7 @@ export default function DeleteModal({ type, name, deleting, onConfirm, onCancel 
             Delete {type === "db" ? "database" : "collection"}?
           </h3>
           <p className="text-sm text-gray-500 leading-relaxed">
-            <span className="font-semibold" style={{ color: "#0d3d26" }}>{name}</span> will be permanently removed and cannot be recovered.
+            <span className="font-semibold line-clamp-1" style={{ color: "#0d3d26" }}>{name}</span> will be permanently removed and cannot be recovered.
             {type === "db" && (
               <span className="block mt-2 text-amber-500 font-medium text-xs">
                 ⚠ The database must be empty first.
@@ -44,7 +44,7 @@ export default function DeleteModal({ type, name, deleting, onConfirm, onCancel 
         </div>
 
         {/* Buttons */}
-        <div className="flex gap-3 w-full">
+        <div className="flex flex-col-reverse sm:flex-row gap-3 w-full">
           <button
             onClick={onCancel}
             className="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm font-semibold text-gray-500 hover:bg-gray-50 hover:text-gray-800 transition-all"

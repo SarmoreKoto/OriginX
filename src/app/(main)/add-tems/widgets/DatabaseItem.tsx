@@ -13,7 +13,6 @@ interface DatabaseItemProps {
   onDrop: () => void;
 }
 
-// Generate a consistent color from db name
 const DB_COLORS = [
   { bg: "#0d3d26", text: "#fff" },
   { bg: "#0d9488", text: "#fff" },
@@ -21,6 +20,7 @@ const DB_COLORS = [
   { bg: "#0369a1", text: "#fff" },
   { bg: "#b45309", text: "#fff" },
 ];
+
 function dbColor(name: string) {
   let h = 0;
   for (let i = 0; i < name.length; i++) h = (h + name.charCodeAt(i)) % DB_COLORS.length;
@@ -38,8 +38,8 @@ export default function DatabaseItem({ db, isSelected, onClick, onDelete, onDrag
       onDrop={onDrop}
       onClick={onClick}
       className={`
-        group relative flex items-center gap-2.5 px-2.5 py-2.5 rounded-xl cursor-pointer
-        border transition-all duration-150 select-none
+        group relative flex items-center gap-2 px-2.5 py-2.5 rounded-xl cursor-pointer
+        border transition-all duration-150 select-none min-w-0
         ${isSelected
           ? "border-transparent shadow-md"
           : "border-transparent hover:bg-gray-50 hover:border-gray-200"
@@ -62,7 +62,7 @@ export default function DatabaseItem({ db, isSelected, onClick, onDelete, onDrag
         </svg>
       </div>
 
-      {/* Avatar icon — colored rounded square with initials */}
+      {/* Avatar icon */}
       <div
         className="w-8 h-8 rounded-lg flex items-center justify-center text-[11px] font-bold flex-shrink-0 transition-all"
         style={
@@ -79,7 +79,7 @@ export default function DatabaseItem({ db, isSelected, onClick, onDelete, onDrag
         <p className={`text-xs font-semibold truncate ${isSelected ? "text-white" : "text-gray-800"}`}>
           {db.name}
         </p>
-        <p className={`text-[10px] font-mono mt-0.5 ${isSelected ? "text-green-300" : "text-gray-400"}`}>
+        <p className={`text-[10px] font-mono mt-0.5 truncate ${isSelected ? "text-green-300" : "text-gray-400"}`}>
           {db.sizeMB} MB
         </p>
       </div>
@@ -92,7 +92,7 @@ export default function DatabaseItem({ db, isSelected, onClick, onDelete, onDrag
         onClick={onDelete}
         className={`
           absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-lg
-          hidden group-hover:flex items-center justify-center transition-all
+          hidden group-hover:flex items-center justify-center transition-all flex-shrink-0
           ${isSelected
             ? "text-white/50 hover:text-white hover:bg-white/10"
             : "text-gray-300 hover:text-red-500 hover:bg-red-50 border border-transparent hover:border-red-100"

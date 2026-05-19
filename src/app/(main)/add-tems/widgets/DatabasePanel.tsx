@@ -28,46 +28,49 @@ export default function DatabasePanel({ databases, selectedDb, loading, onSelect
   const dragIdx = useRef<number | null>(null);
 
   return (
-    <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+    <div className="h-full flex flex-col bg-white border-r border-gray-200 overflow-hidden">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3.5 border-b border-gray-100">
-        <div className="flex items-center gap-2">
-          <span className="w-[3px] h-[14px] rounded-full bg-[#0d3d26] block" />
-          <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Databases</span>
+      <div className="flex items-center justify-between px-4 py-3.5 border-b border-gray-100 flex-shrink-0">
+        <div className="flex items-center gap-2 min-w-0">
+          <span className="w-[3px] h-[14px] rounded-full bg-[#0d3d26] block flex-shrink-0" />
+          <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 truncate">Databases</span>
         </div>
         {!loading && (
-          <span className="text-[10px] font-bold bg-gray-50 border border-gray-200 text-gray-500 px-2 py-0.5 rounded-full">
+          <span className="text-[10px] font-bold bg-gray-50 border border-gray-200 text-gray-500 px-2 py-0.5 rounded-full flex-shrink-0">
             {databases.length}
           </span>
         )}
       </div>
 
-      <div className="p-2">
-        {loading ? (
-          <SkeletonList count={5} />
-        ) : databases.length === 0 ? (
-          <EmptyState icon={<DbSvg />} message="No databases found" sub="Create one to get started" />
-        ) : (
-          <ul className="flex flex-col gap-0.5">
-            {databases.map((db, i) => (
-              <DatabaseItem
-                key={db.name}
-                db={db}
-                index={i}
-                isSelected={selectedDb === db.name}
-                onClick={() => onSelect(db.name)}
-                onDelete={(e) => { e.stopPropagation(); onDelete(db.name); }}
-                onDragStart={() => { dragIdx.current = i; }}
-                onDragOver={(e) => e.preventDefault()}
-                onDrop={() => {
-                  if (dragIdx.current === null || dragIdx.current === i) return;
-                  onReorder(dragIdx.current, i);
-                  dragIdx.current = null;
-                }}
-              />
-            ))}
-          </ul>
-        )}
+      {/* Content */}
+      <div className="flex-1 overflow-y-auto">
+        <div className="p-2">
+          {loading ? (
+            <SkeletonList count={5} />
+          ) : databases.length === 0 ? (
+            <EmptyState icon={<DbSvg />} message="No databases" sub="Create one to get started" className="py-10" />
+          ) : (
+            <ul className="flex flex-col gap-0.5">
+              {databases.map((db, i) => (
+                <DatabaseItem
+                  key={db.name}
+                  db={db}
+                  index={i}
+                  isSelected={selectedDb === db.name}
+                  onClick={() => onSelect(db.name)}
+                  onDelete={(e) => { e.stopPropagation(); onDelete(db.name); }}
+                  onDragStart={() => { dragIdx.current = i; }}
+                  onDragOver={(e) => e.preventDefault()}
+                  onDrop={() => {
+                    if (dragIdx.current === null || dragIdx.current === i) return;
+                    onReorder(dragIdx.current, i);
+                    dragIdx.current = null;
+                  }}
+                />
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
     </div>
   );

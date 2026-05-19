@@ -29,40 +29,40 @@ interface DbWithCollections {
 function DeleteModal({ type, name, deleting, onConfirm, onCancel }:
   { type: 'db' | 'col'; name: string; deleting: boolean; onConfirm: () => void; onCancel: () => void }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-[2px]" onClick={onCancel}>
-      <div className="bg-white rounded-2xl shadow-2xl w-[380px] p-7 flex flex-col items-center gap-5"
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-[2px] p-4 md:p-0" onClick={onCancel}>
+      <div className="bg-white rounded-xl md:rounded-2xl shadow-2xl w-full max-w-[380px] p-5 md:p-7 flex flex-col items-center gap-4 md:gap-5"
         style={{ border: `1.5px solid ${G.danger.border}`, boxShadow: '0 32px 80px rgba(244,63,94,0.14)' }}
         onClick={e => e.stopPropagation()}>
-        <div className="w-14 h-14 rounded-2xl flex items-center justify-center"
+        <div className="w-12 md:w-14 h-12 md:h-14 rounded-2xl flex items-center justify-center"
           style={{ background: G.danger.bg, border: `1.5px solid ${G.danger.border}` }}>
-          <svg width="26" height="26" viewBox="0 0 26 26" fill="none" style={{ color: G.danger.text }}>
+          <svg width="24" height="24" viewBox="0 0 26 26" fill="none" style={{ color: G.danger.text }}>
             <path d="M3 6.5h20M9 6.5V5a1 1 0 011-1h6a1 1 0 011 1v1.5M10.5 11v8M15.5 11v8M5 6.5l1.2 14.2A2 2 0 008.2 22.5h9.6a2 2 0 002-1.8L21 6.5"
               stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </div>
         <div className="text-center">
-          <h3 className="text-base font-bold text-gray-900 mb-2">
+          <h3 className="text-sm md:text-base font-bold text-gray-900 mb-1 md:mb-2">
             Delete {type === 'db' ? 'database' : 'collection'}?
           </h3>
-          <p className="text-sm text-gray-500 leading-relaxed">
+          <p className="text-xs md:text-sm text-gray-500 leading-relaxed">
             <span className="font-semibold" style={{ color: G.accent.text }}>{name}</span> will be permanently removed
             and cannot be recovered.
             {type === 'db' && (
-              <span className="block mt-2 text-amber-500 font-medium text-xs">
+              <span className="block mt-1 md:mt-2 text-amber-500 font-medium text-[10px] md:text-xs">
                 ⚠ All collections inside will also be deleted.
               </span>
             )}
           </p>
         </div>
-        <div className="flex gap-3 w-full">
+        <div className="flex gap-2 md:gap-3 w-full flex-col-reverse sm:flex-row">
           <button onClick={onCancel}
-            className="flex-1 py-2.5 rounded-xl border text-sm font-semibold text-gray-500 hover:bg-gray-50 transition-all"
+            className="flex-1 py-2 md:py-2.5 rounded-lg md:rounded-xl border text-xs md:text-sm font-semibold text-gray-500 hover:bg-gray-50 transition-all"
             style={{ borderColor: '#e8edf5' }}>Cancel</button>
           <button onClick={onConfirm} disabled={deleting}
-            className="flex-1 py-2.5 rounded-xl text-white text-sm font-bold transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+            className="flex-1 py-2 md:py-2.5 rounded-lg md:rounded-xl text-white text-xs md:text-sm font-bold transition-all disabled:opacity-50 flex items-center justify-center gap-2"
             style={{ background: G.danger.grad, boxShadow: '0 4px 14px rgba(244,63,94,0.3)' }}>
             {deleting
-              ? <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" /></svg>
+              ? <svg className="animate-spin w-3 md:w-4 h-3 md:h-4" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" /></svg>
               : 'Delete permanently'}
           </button>
         </div>
@@ -75,28 +75,28 @@ function DeleteModal({ type, name, deleting, onConfirm, onCancel }:
 function ViewCollectionsModal({ dbName, collections, onClose }:
   { dbName: string; collections: CollectionEntry[]; onClose: () => void }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-[2px]" onClick={onClose}>
-      <div className="bg-white rounded-2xl shadow-2xl w-[520px] max-h-[80vh] flex flex-col"
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-[2px] p-4 md:p-0" onClick={onClose}>
+      <div className="bg-white rounded-xl md:rounded-2xl shadow-2xl w-full max-w-[520px] max-h-[80vh] flex flex-col"
         style={{ border: '1.5px solid #b6d9c5', boxShadow: '0 32px 80px rgba(26,58,42,0.14)' }}
         onClick={e => e.stopPropagation()}>
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-5" style={{ background: G.primary.grad, borderRadius: '1rem 1rem 0 0' }}>
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl flex items-center justify-center"
+        <div className="flex items-center justify-between px-4 md:px-6 py-4 md:py-5" style={{ background: G.primary.grad, borderRadius: '0.75rem 0.75rem 0 0' }}>
+          <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
+            <div className="w-8 md:w-9 h-8 md:h-9 rounded-lg md:rounded-xl flex items-center justify-center flex-shrink-0"
               style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.2)' }}>
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
                 <ellipse cx="8" cy="4" rx="5" ry="2" stroke="white" strokeWidth="1.3" />
                 <path d="M3 4v4c0 1.1 2.2 2 5 2s5-.9 5-2V4" stroke="white" strokeWidth="1.3" />
                 <path d="M3 8v4c0 1.1 2.2 2 5 2s5-.9 5-2V8" stroke="white" strokeWidth="1.3" />
               </svg>
             </div>
-            <div>
-              <h3 className="text-sm font-bold text-white">{dbName}</h3>
-              <p className="text-[10px] text-green-200">{collections.length} collection{collections.length !== 1 ? 's' : ''}</p>
+            <div className="min-w-0">
+              <h3 className="text-xs md:text-sm font-bold text-white truncate">{dbName}</h3>
+              <p className="text-[9px] md:text-[10px] text-green-200">{collections.length} collection{collections.length !== 1 ? 's' : ''}</p>
             </div>
           </div>
           <button onClick={onClose}
-            className="w-8 h-8 rounded-xl flex items-center justify-center text-green-200 hover:text-white hover:bg-white/15 transition-all">
+            className="w-7 md:w-8 h-7 md:h-8 rounded-lg flex items-center justify-center text-green-200 hover:text-white hover:bg-white/15 transition-all flex-shrink-0">
             <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" /></svg>
           </button>
         </div>
@@ -104,62 +104,64 @@ function ViewCollectionsModal({ dbName, collections, onClose }:
         {/* Collections list — table style matching dashboard */}
         <div className="overflow-y-auto flex-1">
           {collections.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-14 gap-3">
-              <div className="w-12 h-12 rounded-2xl flex items-center justify-center"
+            <div className="flex flex-col items-center justify-center py-10 md:py-14 gap-2 md:gap-3 px-4">
+              <div className="w-11 md:w-12 h-11 md:h-12 rounded-2xl flex items-center justify-center"
                 style={{ background: G.primary.bg, border: `1.5px dashed ${G.primary.border}` }}>
-                <svg width="20" height="20" viewBox="0 0 22 22" fill="none" style={{ color: G.primary.border }}>
+                <svg width="18" height="18" viewBox="0 0 22 22" fill="none" style={{ color: G.primary.border }}>
                   <rect x="2" y="4" width="18" height="4" rx="1.5" stroke="currentColor" strokeWidth="1.4" />
                   <rect x="2" y="10" width="18" height="4" rx="1.5" stroke="currentColor" strokeWidth="1.4" />
                   <rect x="2" y="16" width="11" height="4" rx="1.5" stroke="currentColor" strokeWidth="1.4" />
                 </svg>
               </div>
-              <p className="text-sm font-semibold text-gray-400">No collections yet</p>
+              <p className="text-xs md:text-sm font-semibold text-gray-400">No collections yet</p>
             </div>
           ) : (
-            <table className="w-full">
-              <thead>
-                <tr style={{ background: '#f4f6fb', borderBottom: '1px solid #e8edf5' }}>
-                  <th className="px-5 py-3 text-left text-[9px] font-black uppercase tracking-widest" style={{ color: '#9ca3af' }}>Collection</th>
-                  <th className="px-5 py-3 text-left text-[9px] font-black uppercase tracking-widest" style={{ color: '#9ca3af' }}>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {collections.map((col, i) => (
-                  <tr key={col.name} className="group transition-all"
-                    style={{ borderTop: i > 0 ? '1px solid #f4f6fb' : 'none' }}
-                    onMouseEnter={e => e.currentTarget.style.background = '#f6fdf9'}
-                    onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
-                    <td className="px-5 py-3.5">
-                      <div className="flex items-center gap-3">
-                        <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
-                          style={{ background: G.accent.bg, border: `1px solid ${G.accent.border}` }}>
-                          <svg width="13" height="13" viewBox="0 0 18 18" fill="none">
-                            <rect x="2" y="3" width="14" height="3" rx="1.2" fill={G.accent.text} opacity="0.9" />
-                            <rect x="2" y="8" width="14" height="3" rx="1.2" fill={G.accent.text} opacity="0.65" />
-                            <rect x="2" y="13" width="9" height="3" rx="1.2" fill={G.accent.text} opacity="0.4" />
-                          </svg>
-                        </div>
-                        <span className="text-xs font-bold" style={{ color: G.primary.text }}>{col.name}</span>
-                      </div>
-                    </td>
-                    <td className="px-5 py-3.5">
-                      <span className="inline-flex items-center gap-1.5 text-[10px] font-bold px-2.5 py-1 rounded-full"
-                        style={{ background: G.primary.bg, color: G.accent.text, border: `1px solid ${G.primary.border}` }}>
-                        <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse inline-block" />
-                        {col.status || 'Active'}
-                      </span>
-                    </td>
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-full">
+                <thead>
+                  <tr style={{ background: '#f4f6fb', borderBottom: '1px solid #e8edf5' }}>
+                    <th className="px-3 md:px-5 py-2.5 md:py-3 text-left text-[9px] font-black uppercase tracking-widest" style={{ color: '#9ca3af' }}>Collection</th>
+                    <th className="px-3 md:px-5 py-2.5 md:py-3 text-left text-[9px] font-black uppercase tracking-widest hidden sm:table-cell" style={{ color: '#9ca3af' }}>Status</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {collections.map((col, i) => (
+                    <tr key={col.name} className="group transition-all"
+                      style={{ borderTop: i > 0 ? '1px solid #f4f6fb' : 'none' }}
+                      onMouseEnter={e => e.currentTarget.style.background = '#f6fdf9'}
+                      onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+                      <td className="px-3 md:px-5 py-2.5 md:py-3.5">
+                        <div className="flex items-center gap-2 md:gap-3">
+                          <div className="w-6 md:w-7 h-6 md:h-7 rounded-lg flex items-center justify-center flex-shrink-0"
+                            style={{ background: G.accent.bg, border: `1px solid ${G.accent.border}` }}>
+                            <svg width="11" height="11" viewBox="0 0 18 18" fill="none">
+                              <rect x="2" y="3" width="14" height="3" rx="1.2" fill={G.accent.text} opacity="0.9" />
+                              <rect x="2" y="8" width="14" height="3" rx="1.2" fill={G.accent.text} opacity="0.65" />
+                              <rect x="2" y="13" width="9" height="3" rx="1.2" fill={G.accent.text} opacity="0.4" />
+                            </svg>
+                          </div>
+                          <span className="text-xs md:text-xs font-bold truncate" style={{ color: G.primary.text }}>{col.name}</span>
+                        </div>
+                      </td>
+                      <td className="px-3 md:px-5 py-2.5 md:py-3.5 hidden sm:table-cell">
+                        <span className="inline-flex items-center gap-1 text-[9px] md:text-[10px] font-bold px-2 md:px-2.5 py-1 rounded-full"
+                          style={{ background: G.primary.bg, color: G.accent.text, border: `1px solid ${G.primary.border}` }}>
+                          <span className="w-1 md:w-1.5 h-1 md:h-1.5 rounded-full bg-green-500 animate-pulse inline-block" />
+                          {col.status || 'Active'}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4" style={{ borderTop: '1px solid #e8edf5' }}>
+        <div className="px-4 md:px-6 py-3 md:py-4" style={{ borderTop: '1px solid #e8edf5' }}>
           <button onClick={onClose}
-            className="w-full py-2.5 rounded-xl border text-sm font-semibold text-gray-500 hover:bg-gray-50 transition-all"
+            className="w-full py-2 md:py-2.5 rounded-lg md:rounded-xl border text-xs md:text-sm font-semibold text-gray-500 hover:bg-gray-50 transition-all"
             style={{ borderColor: '#e8edf5' }}>Close</button>
         </div>
       </div>
@@ -246,55 +248,55 @@ export default function AllCollectionsPage() {
     <div className="min-h-screen font-sans" style={{ background: '#f4f6fb' }}>
       {/* Error banner */}
       {error && (
-        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-5 py-3 bg-white shadow-lg rounded-xl"
+        <div className="fixed top-4 left-4 right-4 z-50 flex items-center gap-2 md:gap-3 px-3 md:px-5 py-2 md:py-3 bg-white shadow-lg rounded-lg md:rounded-xl max-w-sm md:left-1/2 md:right-auto md:-translate-x-1/2"
           style={{ border: '1px solid #fecdd3' }}>
-          <span className="text-xs font-medium flex-1 text-red-600">{error}</span>
-          <button onClick={() => setError('')} className="text-red-400 text-lg leading-none">×</button>
+          <span className="text-xs md:text-xs font-medium flex-1 text-red-600 line-clamp-2">{error}</span>
+          <button onClick={() => setError('')} className="text-red-400 text-lg leading-none flex-shrink-0">×</button>
         </div>
       )}
 
-      <div className="p-6">
+      <div className="p-4 md:p-6">
         {/* ── Header ── */}
-        <div className="flex items-start justify-between mb-6">
+        <div className="flex items-start justify-between mb-4 md:mb-6 gap-3 flex-col sm:flex-row">
           <div>
-            <h1 className="text-2xl font-extrabold tracking-tight" style={{ color: G.primary.text }}>All Databases</h1>
-            <p className="text-sm text-gray-400 mt-1">View and manage all your MongoDB databases and collections</p>
+            <h1 className="text-lg md:text-2xl font-extrabold tracking-tight" style={{ color: G.primary.text }}>All Databases</h1>
+            <p className="text-xs md:text-sm text-gray-400 mt-0.5 md:mt-1">View and manage all your MongoDB databases and collections</p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 md:gap-3 w-full sm:w-auto">
             {!loading && (
-              <>
-                <span className="flex items-center gap-1.5 text-[10px] font-bold px-3 py-1.5 rounded-full"
+              <div className="flex flex-col xs:flex-row items-stretch xs:items-center gap-2">
+                <span className="flex items-center gap-1.5 text-[9px] md:text-[10px] font-bold px-2.5 md:px-3 py-1.5 rounded-lg md:rounded-full whitespace-nowrap"
                   style={{ background: G.primary.bg, color: G.accent.text, border: `1px solid ${G.primary.border}` }}>
-                  <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse inline-block" />
-                  Live · {dbList.length} Database{dbList.length !== 1 ? 's' : ''}
+                  <span className="w-1 md:w-1.5 h-1 md:h-1.5 rounded-full bg-green-500 animate-pulse inline-block" />
+                  Live · {dbList.length} DB{dbList.length !== 1 ? 's' : ''}
                 </span>
-                <span className="flex items-center gap-1.5 text-[10px] font-bold px-3 py-1.5 rounded-full"
+                <span className="flex items-center gap-1 text-[9px] md:text-[10px] font-bold px-2.5 md:px-3 py-1.5 rounded-lg md:rounded-full whitespace-nowrap"
                   style={{ background: G.accent.bg, color: G.primary.text, border: `1px solid ${G.accent.border}` }}>
-                  {totalCollections} Collection{totalCollections !== 1 ? 's' : ''}
+                  {totalCollections} Col{totalCollections !== 1 ? 's' : ''}
                 </span>
-              </>
+              </div>
             )}
             <button onClick={() => fetchAll(true)} disabled={isRefreshing}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white border text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-800 disabled:opacity-50 transition-all"
+              className="flex items-center justify-center gap-1.5 md:gap-2 px-3 md:px-4 py-2 md:py-2.5 rounded-lg md:rounded-xl bg-white border text-xs md:text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-800 disabled:opacity-50 transition-all whitespace-nowrap"
               style={{ borderColor: '#e8edf5', boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}>
-              <svg width="13" height="13" viewBox="0 0 13 13" fill="none" className={isRefreshing ? 'animate-spin' : ''}>
+              <svg width="12" height="12" viewBox="0 0 13 13" fill="none" className={isRefreshing ? 'animate-spin' : ''}>
                 <path d="M1 6.5a5.5 5.5 0 1 0 1-3M1 1v2.5h2.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-              {isRefreshing ? 'Refreshing…' : 'Refresh'}
+              {isRefreshing ? 'Refreshing' : 'Refresh'}
             </button>
           </div>
         </div>
 
         {/* ── Search ── */}
-        <div className="relative mb-5 max-w-sm">
+        <div className="relative mb-4 md:mb-5 max-w-full md:max-w-sm">
           <svg width="14" height="14" viewBox="0 0 15 15" fill="none"
-            className="absolute left-3.5 top-1/2 -translate-y-1/2" style={{ color: G.accent.text }}>
+            className="absolute left-3 md:left-3.5 top-1/2 -translate-y-1/2" style={{ color: G.accent.text }}>
             <circle cx="6.5" cy="6.5" r="5" stroke="currentColor" strokeWidth="1.4" />
             <path d="M11 11l3 3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
           </svg>
           <input value={search} onChange={e => setSearch(e.target.value)}
-            placeholder="Search databases or collections…"
-            className="w-full pl-10 pr-4 py-2.5 bg-white border rounded-xl text-sm text-gray-700 placeholder-gray-400 outline-none transition-all"
+            placeholder="Search databases…"
+            className="w-full pl-9 md:pl-10 pr-3 md:pr-4 py-2 md:py-2.5 bg-white border rounded-lg md:rounded-xl text-xs md:text-sm text-gray-700 placeholder-gray-400 outline-none transition-all"
             style={{ borderColor: '#e8edf5', boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}
             onFocus={e => e.target.style.borderColor = G.primary.border}
             onBlur={e => e.target.style.borderColor = '#e8edf5'} />
@@ -302,58 +304,61 @@ export default function AllCollectionsPage() {
 
         {/* ── Loading skeleton ── */}
         {loading ? (
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-3 md:gap-4">
             {[1, 2, 3].map(n => (
-              <div key={n} className="bg-white border rounded-2xl p-5 animate-pulse" style={{ borderColor: '#e8edf5' }}>
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-9 h-9 rounded-xl bg-gray-100" />
-                  <div className="h-4 bg-gray-100 rounded w-32" />
-                  <div className="h-4 bg-gray-100 rounded w-16 ml-auto" />
+              <div key={n} className="bg-white border rounded-lg md:rounded-2xl p-4 md:p-5 animate-pulse" style={{ borderColor: '#e8edf5' }}>
+                <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">
+                  <div className="w-7 md:w-9 h-7 md:h-9 rounded-lg bg-gray-100 flex-shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <div className="h-3 md:h-4 bg-gray-100 rounded w-32 mb-1.5 md:mb-2" />
+                    <div className="h-2.5 md:h-3 bg-gray-100 rounded w-20" />
+                  </div>
+                  <div className="hidden sm:block h-3 md:h-4 bg-gray-100 rounded w-16 flex-shrink-0" />
                 </div>
-                <div className="grid grid-cols-3 gap-3">
-                  {[1, 2, 3].map(m => <div key={m} className="h-14 bg-gray-100 rounded-xl" />)}
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 md:gap-3">
+                  {[1, 2, 3].map(m => <div key={m} className="h-10 md:h-14 bg-gray-100 rounded-lg" />)}
                 </div>
               </div>
             ))}
           </div>
         ) : filtered.length === 0 ? (
-          <div className="bg-white border rounded-2xl flex flex-col items-center justify-center py-20 gap-4"
+          <div className="bg-white border rounded-lg md:rounded-2xl flex flex-col items-center justify-center py-12 md:py-20 gap-3 md:gap-4 px-4"
             style={{ borderColor: '#e8edf5', boxShadow: '0 1px 8px rgba(0,0,0,0.04)' }}>
-            <div className="w-14 h-14 rounded-2xl flex items-center justify-center"
+            <div className="w-12 md:w-14 h-12 md:h-14 rounded-2xl flex items-center justify-center"
               style={{ background: G.primary.bg, border: `1.5px dashed ${G.primary.border}` }}>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style={{ color: G.primary.border }}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style={{ color: G.primary.border }}>
                 <ellipse cx="12" cy="6" rx="8" ry="3.2" stroke="currentColor" strokeWidth="1.5" />
                 <path d="M4 6v6c0 1.8 3.6 3.2 8 3.2s8-1.4 8-3.2V6" stroke="currentColor" strokeWidth="1.5" />
                 <path d="M4 12v6c0 1.8 3.6 3.2 8 3.2s8-1.4 8-3.2v-6" stroke="currentColor" strokeWidth="1.5" />
               </svg>
             </div>
             <div className="text-center">
-              <p className="text-sm font-bold text-gray-500">{search ? 'No results found' : 'No databases yet'}</p>
-              <p className="text-xs text-gray-400 mt-1">
+              <p className="text-xs md:text-sm font-bold text-gray-500">{search ? 'No results found' : 'No databases yet'}</p>
+              <p className="text-[10px] md:text-xs text-gray-400 mt-0.5 md:mt-1">
                 {search ? `No match for "${search}"` : 'Create a database to get started'}
               </p>
             </div>
             {!search && (
               <a href="/createdatabase"
-                className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-white text-sm font-bold transition-all"
+                className="flex items-center gap-1.5 md:gap-2 px-4 md:px-5 py-2 md:py-2.5 rounded-lg md:rounded-xl text-white text-xs md:text-sm font-bold transition-all"
                 style={{ background: G.primary.grad, boxShadow: '0 4px 14px rgba(26,58,42,0.25)' }}>
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" /></svg>
+                <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" /></svg>
                 Create Database
               </a>
             )}
           </div>
         ) : (
           /* ── Database cards with table layout ── */
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-3 md:gap-4">
             {filtered.map((item, dbIdx) => (
-              <div key={item.db.name} className="bg-white rounded-2xl overflow-hidden"
+              <div key={item.db.name} className="bg-white rounded-lg md:rounded-2xl overflow-hidden"
                 style={{ border: '1px solid #e8edf5', boxShadow: '0 1px 8px rgba(0,0,0,0.04)' }}>
 
                 {/* DB header row */}
-                <div className="flex items-center gap-4 px-5 py-4" style={{ borderBottom: '1px solid #e8edf5' }}>
+                <div className="flex items-center gap-2 md:gap-4 px-3 md:px-5 py-3 md:py-4 flex-wrap sm:flex-nowrap" style={{ borderBottom: '1px solid #e8edf5' }}>
                   {/* Expand toggle */}
                   <button onClick={() => toggleExpand(item.db.name)}
-                    className="w-7 h-7 rounded-lg flex items-center justify-center transition-all flex-shrink-0"
+                    className="w-6 md:w-7 h-6 md:h-7 rounded-lg flex items-center justify-center transition-all flex-shrink-0"
                     style={{ background: G.primary.bg, border: `1px solid ${G.primary.border}`, color: G.accent.text }}>
                     <svg width="10" height="10" viewBox="0 0 11 11" fill="none"
                       className={`transition-transform duration-200 ${item.expanded ? 'rotate-90' : ''}`}>
@@ -362,51 +367,51 @@ export default function AllCollectionsPage() {
                   </button>
 
                   {/* DB icon */}
-                  <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+                  <div className="w-7 md:w-9 h-7 md:h-9 rounded-lg flex items-center justify-center flex-shrink-0"
                     style={{ background: G.primary.bg, border: `1px solid ${G.primary.border}` }}>
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
                       <ellipse cx="8" cy="4" rx="5" ry="2" stroke={G.accent.text} strokeWidth="1.3" />
                       <path d="M3 4v4c0 1.1 2.2 2 5 2s5-.9 5-2V4" stroke={G.accent.text} strokeWidth="1.3" />
                       <path d="M3 8v4c0 1.1 2.2 2 5 2s5-.9 5-2V8" stroke={G.accent.text} strokeWidth="1.3" />
                     </svg>
                   </div>
 
-                  {/* DB name */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-bold truncate" style={{ color: G.primary.text }}>{item.db.name}</span>
-                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full flex-shrink-0"
+                  {/* DB name — responsive */}
+                  <div className="flex-1 min-w-0 flex-grow order-4 sm:order-none sm:flex-grow-0">
+                    <div className="flex items-center gap-1.5 md:gap-2 flex-wrap">
+                      <span className="text-xs md:text-sm font-bold truncate" style={{ color: G.primary.text }}>{item.db.name}</span>
+                      <span className="text-[9px] md:text-[10px] font-semibold px-1.5 md:px-2 py-0.5 rounded-full flex-shrink-0"
                         style={{ background: G.gray.bg, color: G.gray.text, border: `1px solid ${G.gray.border}` }}>
                         {item.db.sizeMB} MB
                       </span>
                     </div>
-                    <p className="text-xs text-gray-400 mt-0.5">
+                    <p className="text-[9px] md:text-xs text-gray-400 mt-0.5">
                       {item.collections.length} collection{item.collections.length !== 1 ? 's' : ''}
                     </p>
                   </div>
 
-                  {/* Actions */}
-                  <div className="flex items-center gap-2 flex-shrink-0">
+                  {/* Actions — responsive */}
+                  <div className="flex items-center gap-1 md:gap-2 flex-shrink-0 order-3 sm:order-none w-full sm:w-auto mt-2 sm:mt-0">
                     <button onClick={() => setViewModal({ dbName: item.db.name, collections: item.collections })}
-                      className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all"
+                      className="flex-1 sm:flex-none flex items-center justify-center gap-1 px-2.5 md:px-3.5 py-1.5 md:py-2 rounded-lg md:rounded-xl text-[10px] md:text-xs font-semibold transition-all"
                       style={{ background: G.accent.bg, color: G.primary.text, border: `1px solid ${G.accent.border}` }}
                       onMouseEnter={e => e.currentTarget.style.background = G.primary.bg}
                       onMouseLeave={e => e.currentTarget.style.background = G.accent.bg}>
-                      <svg width="12" height="12" viewBox="0 0 13 13" fill="none">
+                      <svg width="11" height="11" viewBox="0 0 13 13" fill="none">
                         <circle cx="6.5" cy="6.5" r="2.5" stroke="currentColor" strokeWidth="1.3" />
                         <path d="M1 6.5C2.5 3.5 4.5 2 6.5 2s4 1.5 5.5 4.5C10.5 10 8.5 11 6.5 11S2.5 10 1 6.5z" stroke="currentColor" strokeWidth="1.3" />
                       </svg>
-                      View
+                      <span className="hidden sm:inline">View</span>
                     </button>
                     <button onClick={() => setConfirmDelete({ type: 'db', dbName: item.db.name })}
-                      className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all"
+                      className="flex-1 sm:flex-none flex items-center justify-center gap-1 px-2.5 md:px-3.5 py-1.5 md:py-2 rounded-lg md:rounded-xl text-[10px] md:text-xs font-semibold transition-all"
                       style={{ background: G.danger.bg, color: G.danger.text, border: `1px solid ${G.danger.border}` }}
                       onMouseEnter={e => e.currentTarget.style.background = '#fecdd3'}
                       onMouseLeave={e => e.currentTarget.style.background = G.danger.bg}>
-                      <svg width="12" height="12" viewBox="0 0 13 13" fill="none">
+                      <svg width="11" height="11" viewBox="0 0 13 13" fill="none">
                         <path d="M2 3.5h9M5 3.5V2.5h3v1M4 3.5l.5 7h4l.5-7" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
-                      Delete
+                      <span className="hidden sm:inline">Delete</span>
                     </button>
                   </div>
                 </div>
@@ -415,62 +420,64 @@ export default function AllCollectionsPage() {
                 {item.expanded && (
                   <div style={{ background: '#f6fdf9' }}>
                     {item.collections.length === 0 ? (
-                      <div className="flex items-center justify-center py-6 gap-3">
-                        <span className="text-sm text-gray-400 font-medium">No collections in this database</span>
-                        <a href="/createdatabase" className="text-xs font-semibold underline underline-offset-2"
+                      <div className="flex items-center justify-center py-4 md:py-6 gap-2 md:gap-3 px-4">
+                        <span className="text-xs md:text-sm text-gray-400 font-medium">No collections</span>
+                        <a href="/createdatabase" className="text-[10px] md:text-xs font-semibold underline underline-offset-2"
                           style={{ color: G.accent.text }}>Create one</a>
                       </div>
                     ) : (
-                      <table className="w-full">
-                        <thead>
-                          <tr style={{ background: '#f0faf4', borderBottom: '1px solid #e8edf5' }}>
-                            <th className="px-5 py-3 text-left text-[9px] font-black uppercase tracking-widest" style={{ color: '#9ca3af' }}>Collection</th>
-                            <th className="px-5 py-3 text-left text-[9px] font-black uppercase tracking-widest" style={{ color: '#9ca3af' }}>Status</th>
-                            <th className="px-5 py-3 text-right text-[9px] font-black uppercase tracking-widest" style={{ color: '#9ca3af' }}>Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {item.collections.map((col, i) => (
-                            <tr key={col.name} className="group transition-all"
-                              style={{ borderTop: i > 0 ? '1px solid #e8f5ee' : 'none' }}
-                              onMouseEnter={e => e.currentTarget.style.background = '#e8f5ee'}
-                              onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
-                              <td className="px-5 py-3.5">
-                                <div className="flex items-center gap-3">
-                                  <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
-                                    style={{ background: G.accent.bg, border: `1px solid ${G.accent.border}` }}>
-                                    <svg width="12" height="12" viewBox="0 0 18 18" fill="none">
-                                      <rect x="2" y="3" width="14" height="3" rx="1.2" fill={G.accent.text} opacity="0.9" />
-                                      <rect x="2" y="8" width="14" height="3" rx="1.2" fill={G.accent.text} opacity="0.65" />
-                                      <rect x="2" y="13" width="9" height="3" rx="1.2" fill={G.accent.text} opacity="0.4" />
-                                    </svg>
-                                  </div>
-                                  <span className="text-xs font-bold" style={{ color: G.primary.text }}>{col.name}</span>
-                                </div>
-                              </td>
-                              <td className="px-5 py-3.5">
-                                <span className="inline-flex items-center gap-1.5 text-[10px] font-bold px-2.5 py-1 rounded-full"
-                                  style={{ background: G.primary.bg, color: G.accent.text, border: `1px solid ${G.primary.border}` }}>
-                                  <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse inline-block" />
-                                  {col.status || 'Active'}
-                                </span>
-                              </td>
-                              <td className="px-5 py-3.5">
-                                <div className="flex justify-end opacity-0 group-hover:opacity-100 transition-all">
-                                  <button onClick={() => setConfirmDelete({ type: 'col', dbName: item.db.name, colName: col.name })}
-                                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-bold transition-all"
-                                    style={{ background: G.danger.bg, color: G.danger.text, border: `1px solid ${G.danger.border}` }}
-                                    onMouseEnter={e => e.currentTarget.style.background = '#fecdd3'}
-                                    onMouseLeave={e => e.currentTarget.style.background = G.danger.bg}>
-                                    <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M1.5 3h9M4.5 3V2.25h3V3M3.5 3l.5 6.5h4l.5-6.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                                    Delete
-                                  </button>
-                                </div>
-                              </td>
+                      <div className="overflow-x-auto">
+                        <table className="w-full min-w-full">
+                          <thead>
+                            <tr style={{ background: '#f0faf4', borderBottom: '1px solid #e8edf5' }}>
+                              <th className="px-3 md:px-5 py-2.5 md:py-3 text-left text-[9px] font-black uppercase tracking-widest" style={{ color: '#9ca3af' }}>Collection</th>
+                              <th className="px-3 md:px-5 py-2.5 md:py-3 text-left text-[9px] font-black uppercase tracking-widest hidden sm:table-cell" style={{ color: '#9ca3af' }}>Status</th>
+                              <th className="px-3 md:px-5 py-2.5 md:py-3 text-right text-[9px] font-black uppercase tracking-widest" style={{ color: '#9ca3af' }}>Actions</th>
                             </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                          </thead>
+                          <tbody>
+                            {item.collections.map((col, i) => (
+                              <tr key={col.name} className="group transition-all"
+                                style={{ borderTop: i > 0 ? '1px solid #e8f5ee' : 'none' }}
+                                onMouseEnter={e => e.currentTarget.style.background = '#e8f5ee'}
+                                onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+                                <td className="px-3 md:px-5 py-2.5 md:py-3.5">
+                                  <div className="flex items-center gap-2 md:gap-3">
+                                    <div className="w-6 md:w-7 h-6 md:h-7 rounded-lg flex items-center justify-center flex-shrink-0"
+                                      style={{ background: G.accent.bg, border: `1px solid ${G.accent.border}` }}>
+                                      <svg width="11" height="11" viewBox="0 0 18 18" fill="none">
+                                        <rect x="2" y="3" width="14" height="3" rx="1.2" fill={G.accent.text} opacity="0.9" />
+                                        <rect x="2" y="8" width="14" height="3" rx="1.2" fill={G.accent.text} opacity="0.65" />
+                                        <rect x="2" y="13" width="9" height="3" rx="1.2" fill={G.accent.text} opacity="0.4" />
+                                      </svg>
+                                    </div>
+                                    <span className="text-xs md:text-xs font-bold truncate" style={{ color: G.primary.text }}>{col.name}</span>
+                                  </div>
+                                </td>
+                                <td className="px-3 md:px-5 py-2.5 md:py-3.5 hidden sm:table-cell">
+                                  <span className="inline-flex items-center gap-1 text-[9px] md:text-[10px] font-bold px-2 md:px-2.5 py-1 rounded-full"
+                                    style={{ background: G.primary.bg, color: G.accent.text, border: `1px solid ${G.primary.border}` }}>
+                                    <span className="w-1 md:w-1.5 h-1 md:h-1.5 rounded-full bg-green-500 animate-pulse inline-block" />
+                                    {col.status || 'Active'}
+                                  </span>
+                                </td>
+                                <td className="px-3 md:px-5 py-2.5 md:py-3.5">
+                                  <div className="flex justify-end opacity-0 group-hover:opacity-100 transition-all">
+                                    <button onClick={() => setConfirmDelete({ type: 'col', dbName: item.db.name, colName: col.name })}
+                                      className="flex items-center gap-1 px-2 md:px-3 py-1 md:py-1.5 rounded-lg md:rounded-lg text-[10px] md:text-[11px] font-bold transition-all"
+                                      style={{ background: G.danger.bg, color: G.danger.text, border: `1px solid ${G.danger.border}` }}
+                                      onMouseEnter={e => e.currentTarget.style.background = '#fecdd3'}
+                                      onMouseLeave={e => e.currentTarget.style.background = G.danger.bg}>
+                                      <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M1.5 3h9M4.5 3V2.25h3V3M3.5 3l.5 6.5h4l.5-6.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                                      <span className="hidden md:inline">Delete</span>
+                                    </button>
+                                  </div>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
                     )}
                   </div>
                 )}
